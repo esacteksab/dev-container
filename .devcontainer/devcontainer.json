@@ -1,6 +1,6 @@
 {
   "name": "my-devcontainer",
-  "image": "esacteksab/dev-container:2025-08-31-08-33@sha256:a60a6e4d7a90391b2bb18e9f7cb3281012c78644a9098bd39bc898f4055b955a",
+  "image": "esacteksab/dev-container:2025-09-01-09-07",
   "features": {
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/common-utils:2": {

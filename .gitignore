@@ -125,6 +125,7 @@ hugo_stats.json
 .parcel-cache
 .pnp.*
 .pnpm-debug.log*
+.pnpm-store/
 # Microbundle cache
 .rpt2_cache/
 .rts2_cache_cjs/

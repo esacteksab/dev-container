@@ -6,13 +6,11 @@ example
 .gitignore
 .idea
 .envrc*
-.markdownlint-cli2.yaml
 .pre-commit-config.yaml
 .mise*
 .goreleaser.yaml
 .python-version
 .tp.toml
-.typos.toml
 README.md
 *.exe
 Makefile
