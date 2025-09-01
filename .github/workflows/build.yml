@@ -1,0 +1,44 @@
+name: Build and Push Docker Image
+
+on:
+  schedule:
+    # Run at 9:00 AM Central Time (US/Chicago) every Friday
+    - cron: '0 14 * * 5'
+
+  # Allow manual triggering
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 #v3.11.1
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 #v3.5.0
+        with:
+          username: esacteksab
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Get current date in YYYY-MM-DD format
+      - name: Get current date
+        id: date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 #v6.18.0
+        with:
+          context: .
+          push: true
+          tags: |
+            esacteksab/go:latest
+            esacteksab/go:${{ vars.GO_VERSION }}
+            esacteksab/go:${{ vars.GO_VERSION }}-${{ steps.date.outputs.date }}
+          build-args: |
+            GO_VERSION=${{ vars.GO_VERSION }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
