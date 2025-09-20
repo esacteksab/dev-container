@@ -1,4 +1,4 @@
-FROM ubuntu:24.04@sha256:9cbed754112939e914291337b5e554b07ad7c392491dba6daf25eef1332a22e8 AS python
+FROM ubuntu:24.04@sha256:353675e2a41babd526e2b837d7ec780c2a05bca0164f7ea5dbbd433d21d166fc AS python
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -11,7 +11,7 @@ RUN set -eux && \
         python3-pip=24.0+dfsg-1ubuntu1.2 && \
         pip install --user pre-commit==4.3.0 --break-system-packages
 
-FROM ubuntu:24.04@sha256:9cbed754112939e914291337b5e554b07ad7c392491dba6daf25eef1332a22e8 AS gh
+FROM ubuntu:24.04@sha256:353675e2a41babd526e2b837d7ec780c2a05bca0164f7ea5dbbd433d21d166fc AS gh
 
 RUN set -eux && \
     echo 'APT::Install-Suggests "0";' >> /etc/apt/apt.conf.d/00-docker && \
@@ -32,7 +32,7 @@ RUN set -eux && \
     rm -rf /var/log/apt/* && \
     rm -rf /var/log/dpkg.log
 
-FROM ubuntu:24.04@sha256:9cbed754112939e914291337b5e554b07ad7c392491dba6daf25eef1332a22e8 AS go
+FROM ubuntu:24.04@sha256:353675e2a41babd526e2b837d7ec780c2a05bca0164f7ea5dbbd433d21d166fc AS go
 
 # Set the working directory
 WORKDIR /go
@@ -64,7 +64,7 @@ RUN set -eux && \
     rm -rf /var/log/apt/* && \
     rm -rf /var/log/dpkg.log
 
-FROM ubuntu:24.04@sha256:9cbed754112939e914291337b5e554b07ad7c392491dba6daf25eef1332a22e8 AS node
+FROM ubuntu:24.04@sha256:353675e2a41babd526e2b837d7ec780c2a05bca0164f7ea5dbbd433d21d166fc AS node
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -95,7 +95,7 @@ RUN set -eux && \
     rm -rf /var/log/apt/* && \
     rm -rf /var/log/dpkg.log
 
-FROM ubuntu:24.04@sha256:9cbed754112939e914291337b5e554b07ad7c392491dba6daf25eef1332a22e8
+FROM ubuntu:24.04@sha256:353675e2a41babd526e2b837d7ec780c2a05bca0164f7ea5dbbd433d21d166fc
 
 # Set the working directory
 WORKDIR /go
