@@ -7,9 +7,9 @@ RUN set -eux && \
     echo 'APT::Install-Recommends "0";' >> /etc/apt/apt.conf.d/00-docker && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        ca-certificates=20240203 \
-        python3-pip=24.0+dfsg-1ubuntu1.2 && \
-        pip install --user pre-commit==4.3.0 --break-system-packages
+        ca-certificates \
+        python3-pip && \
+        pip install --user pre-commit==4.5.1 --break-system-packages
 
 FROM ubuntu:24.04@sha256:d1e2e92c075e5ca139d51a140fff46f84315c0fdce203eab2807c7e495eff4f9 AS gh
 
@@ -18,8 +18,8 @@ RUN set -eux && \
     echo 'APT::Install-Recommends "0";' >> /etc/apt/apt.conf.d/00-docker && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        ca-certificates=20240203 \
-        wget=1.21.4-1ubuntu4.1 && \
+        ca-certificates \
+        wget && \
     mkdir -p -m 755 /etc/apt/keyrings \
     && wget -nv -O /etc/apt/keyrings/githubcli-archive-keyring.gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg \
     && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
@@ -37,7 +37,7 @@ FROM ubuntu:24.04@sha256:d1e2e92c075e5ca139d51a140fff46f84315c0fdce203eab2807c7e
 # Set the working directory
 WORKDIR /go
 
-ARG GO_VERSION=1.25.0
+ARG GO_VERSION=1.26.1
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -51,8 +51,8 @@ RUN set -eux && \
     echo 'APT::Install-Recommends "0";' >> /etc/apt/apt.conf.d/00-docker && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        ca-certificates=20240203 \
-        wget=1.21.4-1ubuntu4.1 && \
+        ca-certificates \
+        wget && \
     wget -O go.tar.gz "https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz" && \
     tar -C /usr/local -xzf go.tar.gz && \
     rm go.tar.gz && \
@@ -70,9 +70,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 ARG NODE_MAJOR_VERSION=22
 
-ENV PNPM_VERSION="10.15.0"
+ENV PNPM_VERSION="10.32.1"
 
-ARG PNPM_VERSION=10.15.1
+ARG PNPM_VERSION=10.32.1
 
 ENV SHELL=/usr/bin/bash
 
@@ -81,10 +81,10 @@ RUN set -eux && \
     echo 'APT::Install-Recommends "0";' >> /etc/apt/apt.conf.d/00-docker && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        ca-certificates=20240203 \
-        curl=8.5.0-2ubuntu10.6 \
-        gnupg=2.4.4-2ubuntu17.3 \
-        wget=1.21.4-1ubuntu4.1 && \
+        ca-certificates \
+        curl \
+        gnupg \
+        wget && \
         curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \
         echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_${NODE_MAJOR_VERSION}.x nodistro main" > /etc/apt/sources.list.d/nodesource.list && \
         apt-get update && \
@@ -107,12 +107,12 @@ RUN set -eux && \
     echo 'APT::Install-Recommends "0";' >> /etc/apt/apt.conf.d/00-docker && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-        ca-certificates=20240203 \
-        git=1:2.43.0-1ubuntu7.3 \
-        make=4.3-4.1build2 \
-        python3=3.12.3-0ubuntu2 \
-        python3-pip=24.0+dfsg-1ubuntu1.2 && \
-        zsh=5.9-6ubuntu2 && \
+        ca-certificates \
+        git \
+        make \
+        python3 \
+        python3-pip \
+        zsh && \
     SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.zsh_history" \
     && mkdir -p /commandhistory \
     && touch /commandhistory/.zsh_history \
@@ -133,8 +133,7 @@ COPY --link --from=go /usr/local/go /usr/local/go
 COPY --link --from=node /usr/bin/node /usr/bin/node
 COPY --link --from=node /root/.local/share/pnpm/pnpm /usr/bin/pnpm
 COPY --link --from=python /root/.local /root/.local
-# uv 0.8.14
-COPY --from=ghcr.io/astral-sh/uv@sha256:2381d6aa60c326b71fd40023f921a0a3b8f91b14d5db6b90402e65a635053709 /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.10.10 /uv /uvx /bin/
 
 COPY zshrc /root/.zshrc
 COPY .prettier* .

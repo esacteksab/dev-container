@@ -10,7 +10,7 @@ updates:
     schedule:
       interval: "weekly"
       day: "friday"
-      time: "19:00"
+      time: "17:00"
       timezone: "America/Chicago"
 
   - package-ecosystem: "npm"
@@ -23,7 +23,7 @@ updates:
     schedule:
       interval: "weekly"
       day: "friday"
-      time: "19:00"
+      time: "17:00"
       timezone: "America/Chicago"
 
   - package-ecosystem: "github-actions"
@@ -31,7 +31,7 @@ updates:
     schedule:
       interval: "weekly"
       day: "friday"
-      time: "19:00"
+      time: "17:00"
       timezone: "America/Chicago"
 
   - package-ecosystem: "docker"
@@ -39,5 +39,5 @@ updates:
     schedule:
       interval: "weekly"
       day: "friday"
-      time: "19:00"
+      time: "17:00"
       timezone: "America/Chicago"
