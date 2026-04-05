@@ -1,3 +1,4 @@
+# hadolint global ignore=DL3008
 FROM ubuntu:24.04@sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c AS python
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -20,10 +21,12 @@ RUN set -eux && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
         wget && \
-    mkdir -p -m 755 /etc/apt/keyrings \
+    mkdir -p /etc/apt/keyrings \
+    && chmod 755 /etc/apt/keyrings \
     && wget -nv -O /etc/apt/keyrings/githubcli-archive-keyring.gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg \
     && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-    && mkdir -p -m 755 /etc/apt/sources.list.d \
+    && mkdir -p /etc/apt/sources.list.d \
+    && chmod 755 /etc/apt/sources.list.d \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list \
     && apt-get update \
     && apt-get install -y --no-install-recommends gh && \
@@ -66,6 +69,8 @@ RUN set -eux && \
 
 FROM ubuntu:24.04@sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c AS node
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 ENV DEBIAN_FRONTEND=noninteractive
 
 ARG NODE_MAJOR_VERSION=22
@@ -96,6 +101,8 @@ RUN set -eux && \
     rm -rf /var/log/dpkg.log
 
 FROM ubuntu:24.04@sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Set the working directory
 WORKDIR /go
