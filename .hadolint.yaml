@@ -1,0 +1,3 @@
+ignore:
+  - DL3008 # apt package version pinning -- intentionally unpinned in dev container
+  - DL4006 # pipefail before pipe -- curl | sh used with pinned release URLs
