@@ -107,3 +107,13 @@ repos:
     hooks:
       - id: zizmor
         name: "Zizmor"
+
+  - repo: local
+    hooks:
+      - id: container-structure-test
+        name: "Container Structure Test"
+        entry: scripts/run-container-structure-test.sh
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [manual]
