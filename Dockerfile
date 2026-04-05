@@ -9,7 +9,7 @@ RUN set -eux && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
         python3-pip && \
-        pip install --user pre-commit==4.5.1 --break-system-packages
+        pip install --no-cache-dir --user pre-commit==4.5.1 --break-system-packages
 
 FROM ubuntu:24.04@sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c AS gh
 
@@ -25,8 +25,8 @@ RUN set -eux && \
     && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
     && mkdir -p -m 755 /etc/apt/sources.list.d \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list \
-    && apt update \
-    && apt install gh -y --no-install-recommends && \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends gh && \
     apt-get clean && apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /var/log/apt/* && \
@@ -53,7 +53,7 @@ RUN set -eux && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
         wget && \
-    wget -O go.tar.gz "https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz" && \
+    wget -nv -O go.tar.gz "https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz" && \
     tar -C /usr/local -xzf go.tar.gz && \
     rm go.tar.gz && \
     rm /root/.wget-hsts && \
