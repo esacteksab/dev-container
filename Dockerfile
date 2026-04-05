@@ -174,9 +174,11 @@ COPY --link --from=gh /usr/bin/gh /usr/bin/gh
 COPY --from=ghcr.io/zizmorcore/zizmor:1.23.1 /usr/bin/zizmor /usr/local/bin/zizmor
 COPY --link --from=go /usr/local/go /usr/local/go
 COPY --link --from=node /usr/bin/node /usr/bin/node
-COPY --link --from=node /root/.local/share/pnpm/pnpm /usr/bin/pnpm
+COPY --link --from=node /root/.local/share/pnpm /root/.local/share/pnpm
 COPY --link --from=python /root/.local /root/.local
 COPY --from=ghcr.io/astral-sh/uv:0.10.10 /uv /uvx /bin/
+
+RUN ln -sf /root/.local/share/pnpm/pnpm /usr/bin/pnpm
 
 COPY zshrc /root/.zshrc
 COPY vimrc /root/.vimrc
