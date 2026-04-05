@@ -1,32 +1,35 @@
 {
-  "name": "my-devcontainer",
-  "image": "esacteksab/dev-container:2025-09-01-09-07",
-  "features": {
-    "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/common-utils:2": {
-      "installOhMyZshConfig": "false",
-      "configureZshAsDefaultShell": "true"
-    }
+  "name": "go-docker (shared dev-container)",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
   },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "mounts": [
-    "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
-    "source=myproject-zshhistory,target=/commandhistory,type=volume"
+    "source=go-docker-gh-config,target=/root/.config/gh,type=volume",
+    "source=go-docker-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+    "source=go-docker-zshhistory,target=/commandhistory,type=volume"
   ],
+  "postCreateCommand": "pre-commit install --install-hooks",
   "customizations": {
     "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      },
       "extensions": [
+        "ms-vscode-remote.remote-containers",
+        "golang.go",
+        "ms-python.python",
         "esbenp.prettier-vscode",
         "dbaeumer.vscode-eslint",
         "EditorConfig.EditorConfig",
         "casualjim.gotemplate",
         "tamasfe.even-better-toml",
-        "golang.go",
         "bradlc.vscode-tailwindcss",
         "redhat.vscode-yaml",
         "timonwong.shellcheck",
         "emeraldwalk.RunOnSave"
       ]
     }
-  },
-  "postCreateCommand": "pnpm install && git config devcontainers-theme.show-dirty 1"
+  }
 }

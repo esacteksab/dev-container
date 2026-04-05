@@ -108,15 +108,24 @@ RUN set -eux && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
+        curl \
+        direnv \
         git \
+        libatomic1 \
         make \
+        openssh-client \
         python3 \
         python3-pip \
+        vim \
         zsh && \
+    git config --system core.editor vim && \
+    git config --system pager.diff 'vim -R -c "set ft=diff" -' && \
+    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions && \
     SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.zsh_history" \
     && mkdir -p /commandhistory \
     && touch /commandhistory/.zsh_history \
     && echo "$SNIPPET" >> "/root/.zshrc" && \
+    curl -fsSL https://mise.run | env MISE_INSTALL_PATH=/usr/bin/mise sh && \
     apt-get clean && apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /var/log/apt/* && \
@@ -136,6 +145,7 @@ COPY --link --from=python /root/.local /root/.local
 COPY --from=ghcr.io/astral-sh/uv:0.10.10 /uv /uvx /bin/
 
 COPY zshrc /root/.zshrc
+COPY vimrc /root/.vimrc
 COPY .prettier* .
 COPY .editorconfig .
 COPY .typos.toml .
