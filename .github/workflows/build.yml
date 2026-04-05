@@ -3,7 +3,7 @@ name: Build and Push Docker Image
 on:
   schedule:
     # Run at 9:00 AM Central Time (US/Chicago) every Friday
-    - cron: '0 14 * * 5'
+    - cron: "0 14 * * 5"
 
   # Allow manual triggering
   workflow_dispatch:
