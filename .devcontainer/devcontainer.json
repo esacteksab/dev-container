@@ -11,6 +11,9 @@
     "GIT_COMMITTER_NAME": "Barry Morrison",
     "GIT_COMMITTER_EMAIL": "689591+esacteksab@users.noreply.github.com"
   },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
   "mounts": [
     "source=go-docker-gh-config,target=/root/.config/gh,type=volume",
     "source=go-docker-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",

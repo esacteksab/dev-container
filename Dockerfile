@@ -127,7 +127,7 @@ RUN set -eux && \
         vim \
         zsh && \
     git config --system core.editor vim && \
-    git config --system pager.diff 'vim -R -c "set ft=diff" -' && \
+        git config --system pager.diff 'vim -R -c "set ft=diff" -c "setlocal nomodifiable" -c "nnoremap <silent> q :qa!<CR>" -' && \
     git config --system init.defaultBranch main && \
     git config --system help.autocorrect prompt && \
     git config --system core.excludesFile ~/.gitignore && \
