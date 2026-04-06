@@ -5,21 +5,17 @@
     "context": ".."
   },
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-  "remoteEnv": {
-    "GIT_AUTHOR_NAME": "Barry Morrison",
-    "GIT_AUTHOR_EMAIL": "689591+esacteksab@users.noreply.github.com",
-    "GIT_COMMITTER_NAME": "Barry Morrison",
-    "GIT_COMMITTER_EMAIL": "689591+esacteksab@users.noreply.github.com"
-  },
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   },
   "mounts": [
+    "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,readonly",
     "source=go-docker-gh-config,target=/root/.config/gh,type=volume",
+    "source=${localEnv:HOME}/.config/gh/hosts.yml,target=/root/.config/gh/hosts.yml,type=bind,readonly",
     "source=go-docker-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
     "source=go-docker-zshhistory,target=/commandhistory,type=volume"
   ],
-  "postCreateCommand": "git config --global user.name \"$GIT_AUTHOR_NAME\" && git config --global user.email \"$GIT_AUTHOR_EMAIL\" && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt && .venv/bin/pre-commit install --install-hooks && gh extension install esacteksab/gh-actlock || true && gh extension install esacteksab/gh-tp || true && gh extension install seachicken/gh-poi || true",
+  "postCreateCommand": "python3 -m venv --clear .venv && .venv/bin/python -m pip install -r requirements.txt && .venv/bin/python -m pre_commit install --install-hooks && gh extension install esacteksab/gh-actlock || true && gh extension install esacteksab/gh-tp || true && gh extension install seachicken/gh-poi || true",
   "customizations": {
     "vscode": {
       "settings": {

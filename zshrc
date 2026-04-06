@@ -198,9 +198,24 @@ alias dockce='docker-compose run --rm'
 export EDITOR=vim
 export GIT_EDITOR=vim
 export GIT_PAGER='vim -R -c "set ft=diff" -c "setlocal nomodifiable" -c "nnoremap <silent> q :qa!<CR>" -'
-# Disable ANSI color codes when git pipes output to a pager so vim receives
-# clean text it can syntax-highlight itself via ft=diff.
-[[ -z "$(git config --global color.pager)" ]] && git config --global color.pager false
+# Prefer VS Code's forwarded SSH agent socket when the current value is unset
+# or invalid. This keeps SSH commit signing working inside the dev container.
+if [[ -z "$SSH_AUTH_SOCK" || ! -S "$SSH_AUTH_SOCK" ]]; then
+  vscode_ssh_sockets=(/tmp/vscode-ssh-auth-*.sock(N))
+  if (( ${#vscode_ssh_sockets[@]} > 0 )); then
+    export SSH_AUTH_SOCK="$vscode_ssh_sockets[1]"
+  fi
+fi
+# Disable ANSI color codes when git pipes to the pager so Vim receives clean
+# text it can syntax-highlight itself. Using GIT_CONFIG_COUNT avoids writing
+# to ~/.gitconfig (which may be read-only).
+export GIT_CONFIG_COUNT=2
+export GIT_CONFIG_KEY_0=color.pager
+export GIT_CONFIG_VALUE_0=false
+# Override the Windows signing helper from the host .gitconfig with the
+# native Linux ssh-keygen, which uses SSH_AUTH_SOCK.
+export GIT_CONFIG_KEY_1=gpg.ssh.program
+export GIT_CONFIG_VALUE_1=/usr/bin/ssh-keygen
 bindkey -v
 export KEYTIMEOUT=1
 
