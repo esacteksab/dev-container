@@ -8,7 +8,9 @@ export LANG=en_US.UTF-8
 #----------------------------
 # Shell History
 #----------------------------
-HISTFILE=~/.zsh_history
+export HISTDIR=${HISTDIR:-/commandhistory}
+mkdir -p "$HISTDIR"
+HISTFILE=$HISTDIR/.zsh_history
 HISTSIZE=125000
 SAVEHIST=122500
 #  This  option  works  like  APPEND_HISTORY  except that new history lines are
@@ -195,7 +197,7 @@ alias dockce='docker-compose run --rm'
 
 export EDITOR=vim
 export GIT_EDITOR=vim
-export GIT_PAGER='vim -R -c "set ft=diff" -'
+export GIT_PAGER='vim -R -c "set ft=diff" -c "setlocal nomodifiable" -c "nnoremap <silent> q :qa!<CR>" -'
 # Disable ANSI color codes when git pipes output to a pager so vim receives
 # clean text it can syntax-highlight itself via ft=diff.
 [[ -z "$(git config --global color.pager)" ]] && git config --global color.pager false
