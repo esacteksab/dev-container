@@ -40,10 +40,7 @@ jobs:
           context: .
           push: true
           tags: |
-            esacteksab/go:latest
-            esacteksab/go:${{ vars.GO_VERSION }}
-            esacteksab/go:${{ vars.GO_VERSION }}-${{ steps.date.outputs.date }}
-          build-args: |
-            GO_VERSION=${{ vars.GO_VERSION }}
+            esacteksab/dev-container:latest
+            esacteksab/dev-container:${{steps.date.outputs.date }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
