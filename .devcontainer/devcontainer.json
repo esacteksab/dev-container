@@ -8,12 +8,8 @@
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   },
-  "remoteEnv": {
-    "SSH_AUTH_SOCK": "/root/.1password/agent.sock"
-  },
   "mounts": [
     "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,readonly",
-    "source=${localEnv:HOME}/.1password/agent.sock,target=/root/.1password/agent.sock,type=bind",
     "source=go-docker-gh-config,target=/root/.config/gh,type=volume",
     "source=${localEnv:HOME}/.config/gh/hosts.yml,target=/root/.config/gh/hosts.yml,type=bind,readonly",
     "source=go-docker-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
