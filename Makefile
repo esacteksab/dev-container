@@ -8,3 +8,7 @@ SHELL := bash
 .PHONY: build
 build:
 	./scripts/build-container.sh
+
+.PHONY: test
+test:
+	./scripts/run-container-structure-test.sh

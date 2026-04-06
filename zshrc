@@ -1,88 +1,8 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
-
-# Path to your Oh My Zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="devcontainers"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME="devcontainers"
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
 #----------
 # Variables
 #----------
 export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
+# export LC_ALL=en_US.UTF-8
 
 # https://ianyepan.github.io/posts/moving-away-from-ohmyzsh/
 #----------------------------
@@ -124,7 +44,40 @@ setopt HIST_SAVE_NO_DUPS
 # editing buffer.
 setopt HIST_VERIFY
 
-export BROWSER='/mnt/c/Program\ Files/Mozilla\ Firefox/firefox.exe'
+fpath+=~/.zfunc
+zstyle :compinstall filename '${HOME}/.zshrc'
+
+export GOPATH="$HOME/go"
+
+export PATH=$HOME/bin:$HOME/.local/bin:$HOME/go/bin:/usr/local/bin:/usr/local/go/bin:/usr/local:/usr/bin$PATH
+if command -v code >/dev/null 2>&1; then
+  export BROWSER="$(dirname "$(dirname "$(command -v code)")")/helpers/browser.sh"
+fi
+
+#----------------------------
+# Eval some Stuff
+#----------------------------
+eval "$(direnv hook zsh)"
+eval "$(mise completion zsh)"
+# eval "$(gh tp completion zsh)"
+#-----------------------------
+# Prompt Things
+#-----------------------------
+autoload -Uz colors && colors
+setopt promptsubst
+autoload -Uz vcs_info
+
+# vcs_info configuration
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:git:*' stagedstr '%F{green}*%f'
+zstyle ':vcs_info:git:*' unstagedstr '%F{red}*%f'
+zstyle ':vcs_info:git:*' formats ' %F{cyan}%b%f%u%c'
+zstyle ':vcs_info:git:*' actionformats ' %F{cyan}%b%f|%F{red}%a%f%u%c'
+
+precmd() { vcs_info }
+
+PROMPT='%F{blue}%~%f${vcs_info_msg_0_} %F{magenta}❯%f '
 
 #-----------------------------
 # Alias stuff
@@ -134,7 +87,17 @@ export BROWSER='/mnt/c/Program\ Files/Mozilla\ Firefox/firefox.exe'
 # Return all `history` not just the default last 16
 # https://derflounder.wordpress.com/2022/01/30/zsh-history-command-doesnt-show-all-history-entries-by-default/
 alias history='history 1'
+# WSL4Lyfe!
+alias ssh='ssh.exe'
+alias ssh-add='ssh-add.exe'
+alias :q='exit'
+alias miso='mise'
 
+#
+# GH CLI
+#
+alias gpv='gh pr view -w'
+# https://github.com/Phantas0s/.dotfiles/blob/cb761b6a72e3593881dea6c0e922c71d0b6b81aa/aliases/aliases
 # +----+
 # | ls |
 # +----+
@@ -145,6 +108,11 @@ alias ll='ls -lahF'
 alias lls='ls -lahFtr'
 alias la='ls -A'
 alias lc='ls -CF'
+
+# +------+
+# | wget |
+# +------+
+#alias wget=wget --hsts-file="$XDG_DATA_HOME/wget-hsts"
 
 # +----+
 # | cp |
@@ -174,15 +142,14 @@ alias cb='xclip -sel clip'
 alias gob="go build"
 alias gor="go run"
 alias goc="go clean -i"
-alias gta="go test ./..."       # go test all
-alias gia="go install ./..."    # go install all
+alias gta="go test ./..."    # go test all
+alias gia="go install ./..." # go install all
 
 # +------+
 # | Hugo |
 # +------+
 
 alias hugostart="hugo server -DEF --ignoreCache --disableFastRender"
-
 
 # +-----+
 # | Git |
@@ -199,7 +166,7 @@ alias gpofn='git push origin --force-with-lease --no-verify'
 alias gpt='git push --tag'
 alias gtd='git tag --delete'
 alias gtdr='git tag --delete origin'
-alias grb='git branch -r'                                                                           # display remote branch
+alias grb='git branch -r' # display remote branch
 alias gplo='git pull origin'
 alias gb='git branch '
 alias gc='git commit'
@@ -209,38 +176,112 @@ alias gl='git log --oneline'
 alias gr='git remote'
 alias grs='git remote show'
 alias glol='git log --graph --abbrev-commit --oneline --decorate'
-alias gclean="git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d" # Delete local branch merged with master
-alias gblog="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:red)%(refname:short)%(color:reset) - %(color:yellow)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:blue)%(committerdate:relative)%(color:reset))'"                                                             # git log for each branches
-alias gsub="git submodule update --remote"                                                        # pull submodules
-alias gj="git-jump"                                                                               # Open in vim quickfix list files of interest (git diff, merged...)
+alias gclean="git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"                                                                                                                                                                             # Delete local branch merged with master
+alias gblog="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:red)%(refname:short)%(color:reset) - %(color:yellow)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:blue)%(committerdate:relative)%(color:reset))'" # git log for each branches
+alias gsub="git submodule update --remote"                                                                                                                                                                                                                                    # pull submodules
+alias gj="git-jump"                                                                                                                                                                                                                                                           # Open in vim quickfix list files of interest (git diff, merged...)
+
+# +--------+
+# | docker |
+# +--------+
+alias dockls="docker container ls | awk 'NR > 1 {print \$NF}'"                # display names of running containers
+alias dockRr='docker rm $(docker ps -a -q)'                                   # delete every containers / images
+alias dockRr='docker rm $(docker ps -a -q) && docker rmi $(docker images -q)' # delete every containers / images
+alias dockstats='docker stats $(docker ps -q)'                                # stats on images
+alias dockimg='docker images'                                                 # list images installed
+alias dockprune='docker system prune -a'                                      # prune everything
+alias dockceu='docker-compose run --rm -u $(id -u):$(id -g)'                  # run as the host user
+alias dockce='docker-compose run --rm'
 
 export EDITOR=vim
 export GIT_EDITOR=vim
+export GIT_PAGER='vim -R -c "set ft=diff" -'
+# Disable ANSI color codes when git pipes output to a pager so vim receives
+# clean text it can syntax-highlight itself via ft=diff.
+[[ -z "$(git config --global color.pager)" ]] && git config --global color.pager false
 bindkey -v
 export KEYTIMEOUT=1
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+#-----------------------------
+# Functions
+#-----------------------------
+# Make this a function
+#  xclip -selection clipboard -i < file.txt
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='nvim'
-# fi
+#------------------------------
+# ShellFuncs
+#------------------------------
+# -- coloured manuals
+man() {
+  env \
+    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+    LESS_TERMCAP_md=$(printf "\e[1;31m") \
+    LESS_TERMCAP_me=$(printf "\e[0m") \
+    LESS_TERMCAP_se=$(printf "\e[0m") \
+    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+    LESS_TERMCAP_ue=$(printf "\e[0m") \
+    LESS_TERMCAP_us=$(printf "\e[1;32m") \
+    man "$@"
+}
 
-# Compilation flags
-# export ARCHFLAGS="-arch $(uname -m)"
+autoload -Uz compinit && compinit
+# TODO Revisit https://thevaluable.dev/zsh-completion-guide-examples/
+# https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/completion.zsh
+# case insensitive (all), partial-word and substring completion
 
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
-# plugins, and themes. Aliases can be placed here, though Oh My Zsh
-# users are encouraged to define aliases within a top-level file in
-# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
-# - $ZSH_CUSTOM/aliases.zsh
-# - $ZSH_CUSTOM/macos.zsh
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-zstyle ':omz:update' mode disabled
+unsetopt menu_complete # do not autoselect the first completion entry
+unsetopt flowcontrol
+setopt auto_menu # show completion menu on successive tab press
+setopt complete_in_word
+setopt always_to_end
+
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]-_}={[:upper:][:lower:]_-}' 'r:|=*' 'l:|=* r:|=*'
+
+# disable named-directories autocompletion
+zstyle ':completion:*:cd:*' tag-order local-directories directory-stack path-directories
+
+# Use caching so that commands like apt and dpkg complete are useable
+zstyle ':completion:*' use-cache yes
+zstyle ':completion:*' cache-path $ZSH_CACHE_DIR
+
+# Don't complete uninteresting users
+zstyle ':completion:*:*:*:users' ignored-patterns \
+  adm amanda apache at avahi avahi-autoipd beaglidx bin cacti canna \
+  clamav daemon dbus distcache dnsmasq dovecot fax ftp games gdm \
+  gkrellmd gopher hacluster haldaemon halt hsqldb ident junkbust kdm \
+  ldap lp mail mailman mailnull man messagebus mldonkey mysql nagios \
+  named netdump news nfsnobody nobody nscd ntp nut nx obsrun openvpn \
+  operator pcap polkitd postfix postgres privoxy pulse pvm quagga radvd \
+  rpc rpcuser rpm rtkit scard shutdown squid sshd statd svn sync tftp \
+  usbmux uucp vcsa wwwrun xfs '_*'
+
+# ... unless we really want to.
+zstyle '*' single-ignored show
+
+# https://wiki.archlinux.org/title/Zsh#Key_bindings
+autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+
+[[ -n "${key[Up]}" ]] && bindkey -- "${key[Up]}" up-line-or-beginning-search
+[[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
+
+# https://github.com/zsh-users/zsh-autosuggestions/blob/master/INSTALL.md#manual-git-clone
+#-----------------------------
+# ZSH Autosuggestions
+#-----------------------------
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+fpath+=~/.zfunc
+autoload -Uz compinit
+compinit
+
+eval "$(/usr/bin/mise activate zsh)"
+
+# pnpm
+export PNPM_HOME="/home/bmorriso/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

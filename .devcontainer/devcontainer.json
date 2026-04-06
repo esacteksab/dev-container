@@ -1,32 +1,41 @@
 {
-  "name": "my-devcontainer",
-  "image": "esacteksab/dev-container:2025-09-01-09-07",
-  "features": {
-    "ghcr.io/devcontainers/features/git:1": {},
-    "ghcr.io/devcontainers/features/common-utils:2": {
-      "installOhMyZshConfig": "false",
-      "configureZshAsDefaultShell": "true"
-    }
+  "name": "go-docker (shared dev-container)",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "remoteEnv": {
+    "GIT_AUTHOR_NAME": "Barry Morrison",
+    "GIT_AUTHOR_EMAIL": "689591+esacteksab@users.noreply.github.com",
+    "GIT_COMMITTER_NAME": "Barry Morrison",
+    "GIT_COMMITTER_EMAIL": "689591+esacteksab@users.noreply.github.com"
   },
   "mounts": [
-    "source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
-    "source=myproject-zshhistory,target=/commandhistory,type=volume"
+    "source=go-docker-gh-config,target=/root/.config/gh,type=volume",
+    "source=go-docker-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+    "source=go-docker-zshhistory,target=/commandhistory,type=volume"
   ],
+  "postCreateCommand": "git config --global user.name \"$GIT_AUTHOR_NAME\" && git config --global user.email \"$GIT_AUTHOR_EMAIL\" && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt && .venv/bin/pre-commit install --install-hooks && gh extension install esacteksab/gh-actlock || true && gh extension install esacteksab/gh-tp || true && gh extension install seachicken/gh-poi || true",
   "customizations": {
     "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      },
       "extensions": [
+        "ms-vscode-remote.remote-containers",
+        "golang.go",
+        "ms-python.python",
         "esbenp.prettier-vscode",
         "dbaeumer.vscode-eslint",
         "EditorConfig.EditorConfig",
         "casualjim.gotemplate",
         "tamasfe.even-better-toml",
-        "golang.go",
         "bradlc.vscode-tailwindcss",
         "redhat.vscode-yaml",
         "timonwong.shellcheck",
         "emeraldwalk.RunOnSave"
       ]
     }
-  },
-  "postCreateCommand": "pnpm install && git config devcontainers-theme.show-dirty 1"
+  }
 }

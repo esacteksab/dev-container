@@ -1,3 +1,4 @@
+# hadolint global ignore=DL3008
 FROM ubuntu:24.04@sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c AS python
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -9,7 +10,7 @@ RUN set -eux && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
         python3-pip && \
-        pip install --user pre-commit==4.5.1 --break-system-packages
+        pip install --no-cache-dir --user pre-commit==4.5.1 --break-system-packages
 
 FROM ubuntu:24.04@sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c AS gh
 
@@ -20,13 +21,15 @@ RUN set -eux && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
         wget && \
-    mkdir -p -m 755 /etc/apt/keyrings \
+    mkdir -p /etc/apt/keyrings \
+    && chmod 755 /etc/apt/keyrings \
     && wget -nv -O /etc/apt/keyrings/githubcli-archive-keyring.gpg https://cli.github.com/packages/githubcli-archive-keyring.gpg \
     && chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
-    && mkdir -p -m 755 /etc/apt/sources.list.d \
+    && mkdir -p /etc/apt/sources.list.d \
+    && chmod 755 /etc/apt/sources.list.d \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list \
-    && apt update \
-    && apt install gh -y --no-install-recommends && \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends gh && \
     apt-get clean && apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /var/log/apt/* && \
@@ -53,7 +56,7 @@ RUN set -eux && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
         wget && \
-    wget -O go.tar.gz "https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz" && \
+    wget -nv -O go.tar.gz "https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz" && \
     tar -C /usr/local -xzf go.tar.gz && \
     rm go.tar.gz && \
     rm /root/.wget-hsts && \
@@ -65,6 +68,8 @@ RUN set -eux && \
     rm -rf /var/log/dpkg.log
 
 FROM ubuntu:24.04@sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c AS node
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -97,6 +102,8 @@ RUN set -eux && \
 
 FROM ubuntu:24.04@sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # Set the working directory
 WORKDIR /go
 
@@ -108,15 +115,50 @@ RUN set -eux && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
         ca-certificates \
+        curl \
+        direnv \
         git \
+        libatomic1 \
         make \
+        openssh-client \
         python3 \
         python3-pip \
+        python3-venv \
+        vim \
         zsh && \
+    git config --system core.editor vim && \
+    git config --system pager.diff 'vim -R -c "set ft=diff" -' && \
+    git config --system init.defaultBranch main && \
+    git config --system help.autocorrect prompt && \
+    git config --system core.excludesFile ~/.gitignore && \
+    git config --system rebase.autoSquash true && \
+    git config --system rebase.autoStash true && \
+    git config --system rebase.updateRefs true && \
+    git config --system merge.conflictstyle zdiff3 && \
+    git config --system pull.rebase true && \
+    git config --system diff.algorithm histogram && \
+    git config --system diff.colorMoved plain && \
+    git config --system diff.renames true && \
+    git config --system push.default simple && \
+    git config --system push.autoSetupRemote true && \
+    git config --system push.followTags true && \
+    git config --system fetch.prune true && \
+    git config --system fetch.pruneTags true && \
+    git config --system fetch.all true && \
+    git config --system column.ui auto && \
+    git config --system tag.sort version:refname && \
+    git config --system branch.sort -committerdate && \
+    git config --system credential.https://github.com.helper '!gh auth git-credential' && \
+    git config --system credential.https://gist.github.com.helper '!gh auth git-credential' && \
+    git config --system rerere.enabled true && \
+    git config --system rerere.autoupdate true && \
+    git config --system commit.verbose true && \
+    git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions && \
     SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.zsh_history" \
     && mkdir -p /commandhistory \
     && touch /commandhistory/.zsh_history \
     && echo "$SNIPPET" >> "/root/.zshrc" && \
+    curl -fsSL https://mise.run | env MISE_INSTALL_PATH=/usr/bin/mise sh && \
     apt-get clean && apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /var/log/apt/* && \
@@ -129,13 +171,16 @@ ENV PATH=$GOPATH/bin:/usr/local/go/bin:/root/.local/bin:$PATH
 ENV CGO_ENABLED=0
 
 COPY --link --from=gh /usr/bin/gh /usr/bin/gh
+COPY --from=ghcr.io/zizmorcore/zizmor:1.23.1 /usr/bin/zizmor /usr/local/bin/zizmor
 COPY --link --from=go /usr/local/go /usr/local/go
 COPY --link --from=node /usr/bin/node /usr/bin/node
 COPY --link --from=node /root/.local/share/pnpm/pnpm /usr/bin/pnpm
+COPY --link --from=node /root/.local/share/pnpm/.tools /usr/bin/.tools
 COPY --link --from=python /root/.local /root/.local
 COPY --from=ghcr.io/astral-sh/uv:0.10.10 /uv /uvx /bin/
 
 COPY zshrc /root/.zshrc
+COPY vimrc /root/.vimrc
 COPY .prettier* .
 COPY .editorconfig .
 COPY .typos.toml .

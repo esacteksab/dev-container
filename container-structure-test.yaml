@@ -1,0 +1,109 @@
+schemaVersion: "2.0.0"
+
+commandTests:
+  - name: "go"
+    command: "go"
+    args: ["version"]
+    expectedOutput: ["go version go1\\.26\\."]
+
+  - name: "node"
+    command: "node"
+    args: ["--version"]
+    expectedOutput: ["v22\\."]
+
+  - name: "pnpm"
+    command: "pnpm"
+    args: ["--version"]
+    expectedOutput: ["10\\."]
+    excludedOutput:
+      - "not found"
+      - "No such file or directory"
+      - "Cannot find module"
+
+  - name: "gh"
+    command: "gh"
+    args: ["--version"]
+    expectedOutput: ["gh version "]
+
+  - name: "mise"
+    command: "mise"
+    args: ["--version"]
+    expectedOutput: ["linux-x64"]
+
+  - name: "uv"
+    command: "uv"
+    args: ["--version"]
+    expectedOutput: ["uv "]
+
+  - name: "pre-commit"
+    command: "pre-commit"
+    args: ["--version"]
+    expectedOutput: ["pre-commit "]
+
+  - name: "zsh"
+    command: "zsh"
+    args: ["--version"]
+    expectedOutput: ["zsh "]
+
+  - name: "git"
+    command: "git"
+    args: ["--version"]
+    expectedOutput: ["git version"]
+
+  - name: "direnv"
+    command: "direnv"
+    args: ["--version"]
+
+  - name: "zizmor"
+    command: "zizmor"
+    args: ["--version"]
+    expectedOutput: ["zizmor "]
+
+fileExistenceTests:
+  - name: "/root/.zshrc exists"
+    path: "/root/.zshrc"
+    shouldExist: true
+
+  - name: "/root/.vimrc exists"
+    path: "/root/.vimrc"
+    shouldExist: true
+
+  - name: "/commandhistory exists"
+    path: "/commandhistory"
+    shouldExist: true
+
+  - name: "/usr/bin/gh exists"
+    path: "/usr/bin/gh"
+    shouldExist: true
+
+  - name: "/usr/bin/mise exists"
+    path: "/usr/bin/mise"
+    shouldExist: true
+
+  - name: "/usr/local/bin/zizmor exists"
+    path: "/usr/local/bin/zizmor"
+    shouldExist: true
+
+  - name: "/usr/bin/node exists"
+    path: "/usr/bin/node"
+    shouldExist: true
+
+  - name: "/usr/bin/pnpm exists"
+    path: "/usr/bin/pnpm"
+    shouldExist: true
+
+  - name: "/bin/uv exists"
+    path: "/bin/uv"
+    shouldExist: true
+
+  - name: "/bin/uvx exists"
+    path: "/bin/uvx"
+    shouldExist: true
+
+metadataTest:
+  workdir: "/go"
+  envVars:
+    - key: "GOPATH"
+      value: "/go"
+    - key: "CGO_ENABLED"
+      value: "0"
