@@ -63,7 +63,7 @@
     },
     {
       "fileMatch": [".github/workflows/*.yml"],
-      "url": "https://json.schemastore.org/github-action.json"
+      "url": "https://json.schemastore.org/github-workflow.json"
     },
     {
       "fileMatch": [".golangci.yaml"],
@@ -73,6 +73,12 @@
   "yaml.schemas": {
     "https://golangci-lint.run/jsonschema/golangci.jsonschema.json": [
       ".golangci.yaml"
+    ],
+    "https://raw.githubusercontent.com/hadolint/hadolint/master/contrib/hadolint.json": [
+      ".hadolint.yaml"
+    ],
+    "https://json.schemastore.org/github-workflow.json": [
+      ".github/workflows/*.yml"
     ]
   },
   "material-icon-theme.files.associations": {
