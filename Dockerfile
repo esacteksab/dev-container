@@ -126,33 +126,6 @@ RUN set -eux && \
         python3-venv \
         vim \
         zsh && \
-    git config --system core.editor vim && \
-        git config --system pager.diff 'vim -R -c "set ft=diff" -c "setlocal nomodifiable" -c "nnoremap <silent> q :qa!<CR>" -' && \
-    git config --system init.defaultBranch main && \
-    git config --system help.autocorrect prompt && \
-    git config --system core.excludesFile ~/.gitignore && \
-    git config --system rebase.autoSquash true && \
-    git config --system rebase.autoStash true && \
-    git config --system rebase.updateRefs true && \
-    git config --system merge.conflictstyle zdiff3 && \
-    git config --system pull.rebase true && \
-    git config --system diff.algorithm histogram && \
-    git config --system diff.colorMoved plain && \
-    git config --system diff.renames true && \
-    git config --system push.default simple && \
-    git config --system push.autoSetupRemote true && \
-    git config --system push.followTags true && \
-    git config --system fetch.prune true && \
-    git config --system fetch.pruneTags true && \
-    git config --system fetch.all true && \
-    git config --system column.ui auto && \
-    git config --system tag.sort version:refname && \
-    git config --system branch.sort -committerdate && \
-    git config --system credential.https://github.com.helper '!gh auth git-credential' && \
-    git config --system credential.https://gist.github.com.helper '!gh auth git-credential' && \
-    git config --system rerere.enabled true && \
-    git config --system rerere.autoupdate true && \
-    git config --system commit.verbose true && \
     git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions && \
     SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.zsh_history" \
     && mkdir -p /commandhistory \

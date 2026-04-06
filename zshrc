@@ -198,9 +198,16 @@ alias dockce='docker-compose run --rm'
 export EDITOR=vim
 export GIT_EDITOR=vim
 export GIT_PAGER='vim -R -c "set ft=diff" -c "setlocal nomodifiable" -c "nnoremap <silent> q :qa!<CR>" -'
-# Disable ANSI color codes when git pipes output to a pager so vim receives
-# clean text it can syntax-highlight itself via ft=diff.
-[[ -z "$(git config --global color.pager)" ]] && git config --global color.pager false
+# Disable ANSI color codes when git pipes to the pager so Vim receives clean
+# text it can syntax-highlight itself. Using GIT_CONFIG_COUNT avoids writing
+# to ~/.gitconfig (which may be read-only).
+export GIT_CONFIG_COUNT=2
+export GIT_CONFIG_KEY_0=color.pager
+export GIT_CONFIG_VALUE_0=false
+# Override the Windows signing helper from the host .gitconfig with the
+# native Linux ssh-keygen, which uses SSH_AUTH_SOCK (1Password agent).
+export GIT_CONFIG_KEY_1=gpg.ssh.program
+export GIT_CONFIG_VALUE_1=/usr/bin/ssh-keygen
 bindkey -v
 export KEYTIMEOUT=1
 
