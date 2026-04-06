@@ -12,3 +12,7 @@ build:
 .PHONY: test
 test:
 	./scripts/run-container-structure-test.sh
+
+.PHONY: lint
+lint:
+	docker run --rm -i ghcr.io/hadolint/hadolint hadolint - < Dockerfile
