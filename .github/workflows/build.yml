@@ -3,17 +3,23 @@ name: Build and Push Docker Image
 on:
   schedule:
     # Run at 9:00 AM Central Time (US/Chicago) every Friday
-    - cron: '0 14 * * 5'
+    - cron: "0 14 * * 5"
 
   # Allow manual triggering
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    environment: dockerhub
     steps:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #v6.0.2
+        with:
+          persist-credentials: false
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd #v4.0.0
