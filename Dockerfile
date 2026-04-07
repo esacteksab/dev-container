@@ -147,10 +147,14 @@ COPY --link --from=gh /usr/bin/gh /usr/bin/gh
 COPY --from=ghcr.io/zizmorcore/zizmor:1.23.1 /usr/bin/zizmor /usr/local/bin/zizmor
 COPY --link --from=go /usr/local/go /usr/local/go
 COPY --link --from=node /usr/bin/node /usr/bin/node
+COPY --link --from=node /usr/lib/node_modules /usr/lib/node_modules
 COPY --link --from=node /root/.local/share/pnpm/pnpm /usr/bin/pnpm
 COPY --link --from=node /root/.local/share/pnpm/.tools /usr/bin/.tools
 COPY --link --from=python /root/.local /root/.local
 COPY --from=ghcr.io/astral-sh/uv:0.10.10 /uv /uvx /bin/
+
+RUN ln -sfn ../lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm && \
+    ln -sfn ../lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx
 
 COPY zshrc /root/.zshrc
 COPY vimrc /root/.vimrc
