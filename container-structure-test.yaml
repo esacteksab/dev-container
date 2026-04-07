@@ -11,6 +11,16 @@ commandTests:
     args: ["--version"]
     expectedOutput: ["v22\\."]
 
+  - name: "npm"
+    command: "npm"
+    args: ["--version"]
+    expectedOutput: ["[0-9]+\\."]
+
+  - name: "npx"
+    command: "npx"
+    args: ["--version"]
+    expectedOutput: ["[0-9]+\\."]
+
   - name: "pnpm"
     command: "pnpm"
     args: ["--version"]
@@ -86,6 +96,14 @@ fileExistenceTests:
 
   - name: "/usr/bin/node exists"
     path: "/usr/bin/node"
+    shouldExist: true
+
+  - name: "/usr/bin/npm exists"
+    path: "/usr/bin/npm"
+    shouldExist: true
+
+  - name: "/usr/bin/npx exists"
+    path: "/usr/bin/npx"
     shouldExist: true
 
   - name: "/usr/bin/pnpm exists"
