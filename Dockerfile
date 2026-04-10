@@ -1,5 +1,5 @@
 # hadolint global ignore=DL3008
-FROM ubuntu:24.04@sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c AS python
+FROM ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b AS python
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -12,7 +12,7 @@ RUN set -eux && \
         python3-pip && \
         pip install --no-cache-dir --user pre-commit==4.5.1 --break-system-packages
 
-FROM ubuntu:24.04@sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c AS gh
+FROM ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b AS gh
 
 RUN set -eux && \
     echo 'APT::Install-Suggests "0";' >> /etc/apt/apt.conf.d/00-docker && \
@@ -35,7 +35,7 @@ RUN set -eux && \
     rm -rf /var/log/apt/* && \
     rm -rf /var/log/dpkg.log
 
-FROM ubuntu:24.04@sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c AS go
+FROM ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b AS go
 
 # Set the working directory
 WORKDIR /go
@@ -67,7 +67,7 @@ RUN set -eux && \
     rm -rf /var/log/apt/* && \
     rm -rf /var/log/dpkg.log
 
-FROM ubuntu:24.04@sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c AS node
+FROM ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b AS node
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -100,7 +100,7 @@ RUN set -eux && \
     rm -rf /var/log/apt/* && \
     rm -rf /var/log/dpkg.log
 
-FROM ubuntu:24.04@sha256:186072bba1b2f436cbb91ef2567abca677337cfc786c86e107d25b7072feef0c
+FROM ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
