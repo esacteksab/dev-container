@@ -69,6 +69,16 @@ commandTests:
     args: ["--version"]
     expectedOutput: ["zizmor "]
 
+  - name: "trivy"
+    command: "trivy"
+    args: ["--version"]
+    expectedOutput: ["Version: 0.69.3"]
+
+  - name: "jq"
+    command: "jq"
+    args: ["--version"]
+    expectedOutput: ["jq-"]
+
 fileExistenceTests:
   - name: "/root/.zshrc exists"
     path: "/root/.zshrc"
@@ -116,6 +126,10 @@ fileExistenceTests:
 
   - name: "/bin/uvx exists"
     path: "/bin/uvx"
+    shouldExist: true
+
+  - name: "/usr/bin/trivy exists"
+    path: "/usr/bin/trivy"
     shouldExist: true
 
 metadataTest:

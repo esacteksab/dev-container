@@ -119,6 +119,7 @@ RUN set -eux && \
         direnv \
         git \
         libatomic1 \
+        jq \
         make \
         openssh-client \
         python3 \
@@ -152,9 +153,10 @@ COPY --link --from=node /root/.local/share/pnpm/pnpm /usr/bin/pnpm
 COPY --link --from=node /root/.local/share/pnpm/.tools /usr/bin/.tools
 COPY --link --from=python /root/.local /root/.local
 COPY --from=ghcr.io/astral-sh/uv:0.10.10 /uv /uvx /bin/
+COPY --from=ghcr.io/aquasecurity/trivy /usr/local/bin/trivy /usr/bin/trivy
 
-RUN ln -sfn ../lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm && \
-    ln -sfn ../lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx
+RUN ln -sfn ../lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm \
+    && ln -sfn ../lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx
 
 COPY zshrc /root/.zshrc
 COPY vimrc /root/.vimrc
