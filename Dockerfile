@@ -1,5 +1,5 @@
 # hadolint global ignore=DL3008
-FROM ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b AS python
+FROM ubuntu:24.04@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b AS python
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -12,7 +12,7 @@ RUN set -eux && \
         python3-pip && \
         pip install --no-cache-dir --user pre-commit==4.5.1 --break-system-packages
 
-FROM ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b AS gh
+FROM ubuntu:24.04@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b AS gh
 
 RUN set -eux && \
     echo 'APT::Install-Suggests "0";' >> /etc/apt/apt.conf.d/00-docker && \
@@ -35,7 +35,7 @@ RUN set -eux && \
     rm -rf /var/log/apt/* && \
     rm -rf /var/log/dpkg.log
 
-FROM ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b AS go
+FROM ubuntu:24.04@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b AS go
 
 # Set the working directory
 WORKDIR /go
@@ -67,7 +67,7 @@ RUN set -eux && \
     rm -rf /var/log/apt/* && \
     rm -rf /var/log/dpkg.log
 
-FROM ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b AS node
+FROM ubuntu:24.04@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b AS node
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -100,7 +100,7 @@ RUN set -eux && \
     rm -rf /var/log/apt/* && \
     rm -rf /var/log/dpkg.log
 
-FROM ubuntu:24.04@sha256:84e77dee7d1bc93fb029a45e3c6cb9d8aa4831ccfcc7103d36e876938d28895b
+FROM ubuntu:24.04@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -153,7 +153,7 @@ COPY --link --from=node /root/.local/share/pnpm/pnpm /usr/bin/pnpm
 COPY --link --from=node /root/.local/share/pnpm/.tools /usr/bin/.tools
 COPY --link --from=python /root/.local /root/.local
 COPY --from=ghcr.io/astral-sh/uv:0.10.10 /uv /uvx /bin/
-COPY --from=ghcr.io/aquasecurity/trivy /usr/local/bin/trivy /usr/bin/trivy
+COPY --from=ghcr.io/aquasecurity/trivy:0.69.3 /usr/local/bin/trivy /usr/bin/trivy
 
 RUN ln -sfn ../lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm \
     && ln -sfn ../lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx
