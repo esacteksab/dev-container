@@ -15,8 +15,7 @@
   },
   "mounts": [
     "source=${localEnv:HOME}/.gitconfig,target=/home/${localEnv:USER}/.gitconfig,type=bind,readonly",
-    "source=go-docker-gh-config,target=/home/${localEnv:USER}/.config/gh,type=volume",
-    "source=${localEnv:HOME}/.config/gh/hosts.yml,target=/home/${localEnv:USER}/.config/gh/hosts.yml,type=bind,readonly",
+    "source=${localEnv:HOME}/.config/gh,target=/home/${localEnv:USER}/.config/gh,type=bind",
     "source=go-docker-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
     "source=go-docker-zshhistory,target=/commandhistory,type=volume"
   ],
