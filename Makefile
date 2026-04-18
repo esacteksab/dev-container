@@ -16,3 +16,7 @@ test:
 .PHONY: lint
 lint:
 	docker run --rm -i ghcr.io/hadolint/hadolint hadolint - < Dockerfile
+
+.PHONY: devcontainer-clean
+devcontainer-clean:
+	./scripts/cleanup-devcontainer.sh "$(PWD)"

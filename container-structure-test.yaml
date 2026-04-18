@@ -80,12 +80,12 @@ commandTests:
     expectedOutput: ["jq-"]
 
 fileExistenceTests:
-  - name: "/root/.zshrc exists"
-    path: "/root/.zshrc"
+  - name: "/home/devcontainer/.zshrc exists"
+    path: "/home/devcontainer/.zshrc"
     shouldExist: true
 
-  - name: "/root/.vimrc exists"
-    path: "/root/.vimrc"
+  - name: "/home/devcontainer/.vimrc exists"
+    path: "/home/devcontainer/.vimrc"
     shouldExist: true
 
   - name: "/commandhistory exists"

@@ -8,9 +8,39 @@ export LANG=en_US.UTF-8
 #----------------------------
 # Shell History
 #----------------------------
-export HISTDIR=${HISTDIR:-/commandhistory}
-mkdir -p "$HISTDIR"
-HISTFILE=$HISTDIR/.zsh_history
+DEFAULT_HISTDIR="/commandhistory"
+FALLBACK_HISTDIR="${HOME}/.local/state/zsh"
+
+# Use shared container history when writable; otherwise fall back to a
+# user-owned location to avoid lock/permission errors on reused volumes.
+if [[ -n "${HISTDIR:-}" ]]; then
+  mkdir -p "$HISTDIR" 2>/dev/null || true
+elif [[ -d "$DEFAULT_HISTDIR" && -w "$DEFAULT_HISTDIR" ]]; then
+  HISTDIR="$DEFAULT_HISTDIR"
+elif mkdir -p "$DEFAULT_HISTDIR" 2>/dev/null && [[ -w "$DEFAULT_HISTDIR" ]]; then
+  HISTDIR="$DEFAULT_HISTDIR"
+else
+  HISTDIR="$FALLBACK_HISTDIR"
+  mkdir -p "$HISTDIR"
+fi
+
+HISTFILE="$HISTDIR/.zsh_history"
+if ! touch "$HISTFILE" 2>/dev/null; then
+  HISTDIR="$FALLBACK_HISTDIR"
+  mkdir -p "$HISTDIR"
+  HISTFILE="$HISTDIR/.zsh_history"
+  touch "$HISTFILE"
+fi
+
+# A history file with NUL bytes is unreadable for zsh and triggers
+# "corrupt history file" on startup; rotate it once and start fresh.
+if LC_ALL=C grep -q $'\x00' "$HISTFILE" 2>/dev/null; then
+  mv "$HISTFILE" "${HISTFILE}.corrupt.$(date +%s)"
+  touch "$HISTFILE"
+fi
+
+# Prefer fcntl-based locks so zsh does not depend on creating lock files.
+setopt HIST_FCNTL_LOCK
 HISTSIZE=125000
 SAVEHIST=122500
 #  This  option  works  like  APPEND_HISTORY  except that new history lines are

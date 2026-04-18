@@ -1,17 +1,22 @@
 {
   "name": "go-docker (shared dev-container)",
+  "initializeCommand": "bash ./scripts/cleanup-devcontainer.sh \"${localWorkspaceFolder}\"",
   "build": {
     "dockerfile": "../Dockerfile",
-    "context": ".."
+    "context": "..",
+    "args": {
+      "USERNAME": "${localEnv:USER}"
+    }
   },
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "remoteUser": "${localEnv:USER}",
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   },
   "mounts": [
-    "source=${localEnv:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,readonly",
-    "source=go-docker-gh-config,target=/root/.config/gh,type=volume",
-    "source=${localEnv:HOME}/.config/gh/hosts.yml,target=/root/.config/gh/hosts.yml,type=bind,readonly",
+    "source=${localEnv:HOME}/.gitconfig,target=/home/${localEnv:USER}/.gitconfig,type=bind,readonly",
+    "source=go-docker-gh-config,target=/home/${localEnv:USER}/.config/gh,type=volume",
+    "source=${localEnv:HOME}/.config/gh/hosts.yml,target=/home/${localEnv:USER}/.config/gh/hosts.yml,type=bind,readonly",
     "source=go-docker-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
     "source=go-docker-zshhistory,target=/commandhistory,type=volume"
   ],
