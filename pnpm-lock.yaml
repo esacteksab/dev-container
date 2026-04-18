@@ -8,24 +8,21 @@ importers:
 
   .:
     devDependencies:
-      npm:
-        specifier: ^11.12.1
-        version: 11.12.1
       prettier:
-        specifier: ^3.8.2
-        version: 3.8.2
+        specifier: ^3.8.3
+        version: 3.8.3
       prettier-plugin-go-template:
         specifier: ^0.0.15
-        version: 0.0.15(prettier@3.8.2)
+        version: 0.0.15(prettier@3.8.3)
       prettier-plugin-pkg:
         specifier: ^0.22.1
-        version: 0.22.1(prettier@3.8.2)
+        version: 0.22.1(prettier@3.8.3)
       prettier-plugin-sh:
         specifier: ^0.18.1
-        version: 0.18.1(prettier@3.8.2)
+        version: 0.18.1(prettier@3.8.3)
       prettier-plugin-toml:
         specifier: ^2.0.6
-        version: 2.0.6(prettier@3.8.2)
+        version: 2.0.6(prettier@3.8.3)
 
 packages:
 
@@ -38,77 +35,6 @@ packages:
 
   '@taplo/lib@0.5.0':
     resolution: {integrity: sha512-+xIqpQXJco3T+VGaTTwmhxLa51qpkQxCjRwezjFZgr+l21ExlywJFcDfTrNmL6lG6tqb0h8GyJKO3UPGPtSCWg==}
-
-  npm@11.12.1:
-    resolution: {integrity: sha512-zcoUuF1kezGSAo0CqtvoLXX3mkRqzuqYdL6Y5tdo8g69NVV3CkjQ6ZBhBgB4d7vGkPcV6TcvLi3GRKPDFX+xTA==}
-    engines: {node: ^20.17.0 || >=22.9.0}
-    hasBin: true
-    bundledDependencies:
-      - '@isaacs/string-locale-compare'
-      - '@npmcli/arborist'
-      - '@npmcli/config'
-      - '@npmcli/fs'
-      - '@npmcli/map-workspaces'
-      - '@npmcli/metavuln-calculator'
-      - '@npmcli/package-json'
-      - '@npmcli/promise-spawn'
-      - '@npmcli/redact'
-      - '@npmcli/run-script'
-      - '@sigstore/tuf'
-      - abbrev
-      - archy
-      - cacache
-      - chalk
-      - ci-info
-      - fastest-levenshtein
-      - fs-minipass
-      - glob
-      - graceful-fs
-      - hosted-git-info
-      - ini
-      - init-package-json
-      - is-cidr
-      - json-parse-even-better-errors
-      - libnpmaccess
-      - libnpmdiff
-      - libnpmexec
-      - libnpmfund
-      - libnpmorg
-      - libnpmpack
-      - libnpmpublish
-      - libnpmsearch
-      - libnpmteam
-      - libnpmversion
-      - make-fetch-happen
-      - minimatch
-      - minipass
-      - minipass-pipeline
-      - ms
-      - node-gyp
-      - nopt
-      - npm-audit-report
-      - npm-install-checks
-      - npm-package-arg
-      - npm-pick-manifest
-      - npm-profile
-      - npm-registry-fetch
-      - npm-user-validate
-      - p-map
-      - pacote
-      - parse-conflict-json
-      - proc-log
-      - qrcode-terminal
-      - read
-      - semver
-      - spdx-expression-parse
-      - ssri
-      - supports-color
-      - tar
-      - text-table
-      - tiny-relative-date
-      - treeverse
-      - validate-npm-package-name
-      - which
 
   prettier-plugin-go-template@0.0.15:
     resolution: {integrity: sha512-WqU92E1NokWYNZ9mLE6ijoRg6LtIGdLMePt2C7UBDjXeDH9okcRI3zRqtnWR4s5AloiqyvZ66jNBAa9tmRY5EQ==}
@@ -134,8 +60,8 @@ packages:
     peerDependencies:
       prettier: ^3.0.3
 
-  prettier@3.8.2:
-    resolution: {integrity: sha512-8c3mgTe0ASwWAJK+78dpviD+A8EqhndQPUBpNUIPt6+xWlIigCwfN01lWr9MAede4uqXGTEKeQWTvzb3vjia0Q==}
+  prettier@3.8.3:
+    resolution: {integrity: sha512-7igPTM53cGHMW8xWuVTydi2KO233VFiTNyF5hLJqpilHfmn8C8gPf+PS7dUT64YcXFbiMGZxS9pCSxL/Dxm/Jw==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -160,29 +86,27 @@ snapshots:
     dependencies:
       '@taplo/core': 0.2.0
 
-  npm@11.12.1: {}
-
-  prettier-plugin-go-template@0.0.15(prettier@3.8.2):
+  prettier-plugin-go-template@0.0.15(prettier@3.8.3):
     dependencies:
-      prettier: 3.8.2
+      prettier: 3.8.3
       ulid: 2.4.0
 
-  prettier-plugin-pkg@0.22.1(prettier@3.8.2):
+  prettier-plugin-pkg@0.22.1(prettier@3.8.3):
     dependencies:
-      prettier: 3.8.2
+      prettier: 3.8.3
 
-  prettier-plugin-sh@0.18.1(prettier@3.8.2):
+  prettier-plugin-sh@0.18.1(prettier@3.8.3):
     dependencies:
       '@reteps/dockerfmt': 0.5.2
-      prettier: 3.8.2
+      prettier: 3.8.3
       sh-syntax: 0.5.8
 
-  prettier-plugin-toml@2.0.6(prettier@3.8.2):
+  prettier-plugin-toml@2.0.6(prettier@3.8.3):
     dependencies:
       '@taplo/lib': 0.5.0
-      prettier: 3.8.2
+      prettier: 3.8.3
 
-  prettier@3.8.2: {}
+  prettier@3.8.3: {}
 
   sh-syntax@0.5.8:
     dependencies:

@@ -9,8 +9,7 @@ RUN set -eux \
     && apt-get update \
     && apt-get install -y --no-install-recommends \
         ca-certificates \
-        python3-pip \
-    && pip install --no-cache-dir --user pre-commit==4.5.1 --break-system-packages
+        python3-pip
 
 FROM ubuntu:24.04@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b AS gh
 
@@ -40,7 +39,7 @@ FROM ubuntu:24.04@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194
 # Set the working directory
 WORKDIR /go
 
-ARG GO_VERSION=1.26.1
+ARG GO_VERSION=1.26.2
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -75,9 +74,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 ARG NODE_MAJOR_VERSION=22
 
-ENV PNPM_VERSION="10.32.1"
+ENV PNPM_VERSION="10.33.0"
 
-ARG PNPM_VERSION=10.32.1
+ARG PNPM_VERSION=10.33.0
 
 ENV SHELL=/usr/bin/bash
 
@@ -112,6 +111,8 @@ ARG USER_GID=${USER_UID}
 WORKDIR /go
 
 ENV DEBIAN_FRONTEND=noninteractive
+
+COPY requirements.txt /tmp/requirements.txt
 
 RUN set -eux \
     && echo 'APT::Install-Suggests "0";' >> /etc/apt/apt.conf.d/00-docker \
@@ -151,6 +152,7 @@ RUN set -eux \
     && touch /commandhistory/.zsh_history \
     && chown -R "${USER_UID}:${USER_GID}" /commandhistory \
     && echo "$SNIPPET" >> "/home/${USERNAME}/.zshrc" \
+    && python3 -m pip install --no-cache-dir -r /tmp/requirements.txt --break-system-packages \
     && curl -fsSL https://mise.run | env MISE_INSTALL_PATH=/usr/bin/mise sh \
     && apt-get clean && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
@@ -164,15 +166,14 @@ ENV PATH=$GOPATH/bin:/usr/local/go/bin:/home/${USERNAME}/.local/bin:$PATH
 ENV CGO_ENABLED=0
 
 COPY --link --from=gh /usr/bin/gh /usr/bin/gh
-COPY --from=ghcr.io/zizmorcore/zizmor:1.23.1 /usr/bin/zizmor /usr/local/bin/zizmor
+COPY --from=ghcr.io/zizmorcore/zizmor:1.24.1 /usr/bin/zizmor /usr/local/bin/zizmor
 COPY --link --from=go /usr/local/go /usr/local/go
 COPY --link --from=node /usr/bin/node /usr/bin/node
 COPY --link --from=node /usr/lib/node_modules /usr/lib/node_modules
 COPY --link --from=node /root/.local/share/pnpm/pnpm /usr/bin/pnpm
 COPY --link --from=node /root/.local/share/pnpm/.tools /usr/bin/.tools
-COPY --link --from=python /root/.local/bin/pre-commit /usr/local/bin/pre-commit
-COPY --from=ghcr.io/astral-sh/uv:0.10.10 /uv /uvx /bin/
-COPY --from=ghcr.io/aquasecurity/trivy:0.69.3 /usr/local/bin/trivy /usr/bin/trivy
+COPY --from=ghcr.io/astral-sh/uv:0.11.7 /uv /uvx /bin/
+COPY --from=ghcr.io/aquasecurity/trivy:0.70.0 /usr/local/bin/trivy /usr/bin/trivy
 
 RUN ln -sfn ../lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm \
     && ln -sfn ../lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx
