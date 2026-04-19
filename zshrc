@@ -326,7 +326,7 @@ compinit
 eval "$(/usr/bin/mise activate zsh)"
 
 # pnpm
-export PNPM_HOME="/home/bmorriso/.local/share/pnpm"
+export PNPM_HOME="/home/bdmorrison/.local/share/pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;

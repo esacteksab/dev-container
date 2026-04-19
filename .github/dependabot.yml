@@ -49,3 +49,16 @@ updates:
       timezone: "America/Chicago"
     cooldown:
       default-days: 7
+
+  - package-ecosystem: "pre-commit" # zizmor: ignore[dependabot-cooldown]
+    directory: "/"
+    groups:
+      pre-commit-minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "17:00"
+      timezone: "America/Chicago"

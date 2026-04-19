@@ -72,7 +72,7 @@ commandTests:
   - name: "trivy"
     command: "trivy"
     args: ["--version"]
-    expectedOutput: ["Version: 0.69.3"]
+    expectedOutput: ["Version: 0.70.0"]
 
   - name: "jq"
     command: "jq"
