@@ -20,3 +20,6 @@ fix: false
 ignores:
   - "testdata/**"
   - "testdata/golden.md"
+  - ".github/instructions/**"
+  - ".github/prompts/**"
+  - "AGENTS.md"
