@@ -139,6 +139,7 @@ COPY --from=ghcr.io/zizmorcore/zizmor@sha256:128ebbe369a95f9d4427737e79453725609
 COPY --link --from=golang:1.26.3@sha256:313faae491b410a35402c05d35e7518ae99103d957308e940e1ae2cfa0aac29b /usr/local/go /usr/local/go
 COPY --link --from=node /usr/bin/node /usr/bin/node
 COPY --link --from=node /usr/lib/node_modules /usr/lib/node_modules
+# pnpm's entrypoint is a symlink into its package directory, so both are required.
 COPY --link --from=pnpm /usr/local/bin/pnpm /usr/local/bin/pnpm
 COPY --link --from=pnpm /usr/local/lib/node_modules/pnpm /usr/local/lib/node_modules/pnpm
 COPY --from=ghcr.io/astral-sh/uv@sha256:240fb85ab0f263ef12f492d8476aa3a2e4e1e333f7d67fbdd923d00a506a516a /uv /uvx /bin/
