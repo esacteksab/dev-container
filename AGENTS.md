@@ -24,18 +24,11 @@ If Docker reports `removal of container <id> is already in progress`, run `make 
 
 **When you update a tool version in the Dockerfile, you must also update the version assertion in [`container-structure-test.yaml`](container-structure-test.yaml).** Both files must stay in sync — the test file is the source of truth for what's expected at runtime.
 
-Currently pinned versions (see Dockerfile for authoritative values):
+Current pinned versions and digests must match the values in the Dockerfile and the runtime assertions in [`container-structure-test.yaml`](container-structure-test.yaml).
 
-| Tool       | Version |
-| ---------- | ------- |
-| Go         | 1.26.2  |
-| Node       | v22     |
-| pnpm       | 10.33.0 |
-| pre-commit | 4.6.0   |
-| uv         | 0.11.7  |
-| trivy      | 0.70.0  |
-| zizmor     | 1.24.1  |
-| Prettier   | 3.8.3   |
+- Use the Dockerfile as the authoritative source for pinned install URLs, package versions, and image/tool digests.
+- Use [`container-structure-test.yaml`](container-structure-test.yaml) as the authoritative source for what is verified at runtime.
+- When updating any pinned tool version, update both files together and keep this document free of duplicated version tables unless they are updated in the same change.
 
 GitHub CLI (`gh`) and `mise` are intentionally floating (latest).
 
