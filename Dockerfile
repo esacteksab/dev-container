@@ -62,6 +62,8 @@ RUN set -eux \
     && rm -rf /var/log/apt/* \
     && rm -rf /var/log/dpkg.log
 
+FROM gplane/pnpm:10.33.0@sha256:bcddca69e510323f657a2071e8c40f9a43847b7bed788205704a95fdcad75211 AS pnpm
+
 FROM ubuntu:24.04@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -137,8 +139,8 @@ COPY --from=ghcr.io/zizmorcore/zizmor@sha256:128ebbe369a95f9d4427737e79453725609
 COPY --link --from=golang:1.26.3@sha256:313faae491b410a35402c05d35e7518ae99103d957308e940e1ae2cfa0aac29b /usr/local/go /usr/local/go
 COPY --link --from=node /usr/bin/node /usr/bin/node
 COPY --link --from=node /usr/lib/node_modules /usr/lib/node_modules
-COPY --from=gplane/pnpm:10.33.0@sha256:bcddca69e510323f657a2071e8c40f9a43847b7bed788205704a95fdcad75211 /usr/local/bin/pnpm /usr/local/bin/pnpm
-COPY --from=gplane/pnpm:10.33.0@sha256:bcddca69e510323f657a2071e8c40f9a43847b7bed788205704a95fdcad75211 /usr/local/lib/node_modules/pnpm /usr/local/lib/node_modules/pnpm
+COPY --link --from=pnpm /usr/local/bin/pnpm /usr/local/bin/pnpm
+COPY --link --from=pnpm /usr/local/lib/node_modules/pnpm /usr/local/lib/node_modules/pnpm
 COPY --from=ghcr.io/astral-sh/uv@sha256:240fb85ab0f263ef12f492d8476aa3a2e4e1e333f7d67fbdd923d00a506a516a /uv /uvx /bin/
 COPY --from=ghcr.io/aquasecurity/trivy@sha256:be1190afcb28352bfddc4ddeb71470835d16462af68d310f9f4bca710961a41e /usr/local/bin/trivy /usr/bin/trivy
 COPY --from=ghcr.io/hadolint/hadolint@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e /bin/hadolint /bin/
