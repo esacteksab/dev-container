@@ -14,13 +14,17 @@ if make lint >/tmp/hadolint-hook.log 2>&1; then
   exit 0
 fi
 
-lint_output="$(tail -n 80 /tmp/hadolint-hook.log | sed 's/"/\\"/g')"
+lint_output="$(tail -n 80 /tmp/hadolint-hook.log)"
+system_message_json="$(
+  printf 'hadolint reported violations:\n%s' "$lint_output" | \
+    python3 -c 'import json, sys; print(json.dumps(sys.stdin.read()))'
+)"
 
 cat <<JSON
 {
   "decision": "block",
   "reason": "Dockerfile lint failed. Fix pinning/security issues before continuing.",
-  "systemMessage": "hadolint reported violations:\n${lint_output}"
+  "systemMessage": ${system_message_json}
 }
 JSON
 
