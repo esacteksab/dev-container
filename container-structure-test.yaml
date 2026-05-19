@@ -116,8 +116,8 @@ fileExistenceTests:
     path: "/usr/bin/npx"
     shouldExist: true
 
-  - name: "/usr/bin/pnpm exists"
-    path: "/usr/bin/pnpm"
+  - name: "/usr/local/bin/pnpm exists"
+    path: "/usr/local/bin/pnpm"
     shouldExist: true
 
   - name: "/bin/uv exists"
