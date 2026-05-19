@@ -16,8 +16,8 @@ If Docker reports `removal of container <id> is already in progress`, run `make 
 ## Dockerfile Conventions
 
 - **Base image is SHA256-pinned** (`ubuntu:24.04@sha256:...`) for reproducibility. Update the digest intentionally, not casually.
-- **Multi-stage build**: separate `python`, `gh`, `go`, `node` stages; binaries are copied into the final stage to minimize image size.
-- **Binary tools** (zizmor, uv, trivy) are fetched at exact pinned versions via `curl`/`wget`. Go and Node runtimes are similarly version-locked.
+- **Multi-stage build**: separate `python`, `gh`, `node`, and final stages; binaries are copied into the final stage to minimize image size.
+- **Binary tools** (zizmor, uv, trivy) are fetched at exact pinned versions via `curl`/`wget`. Go is sourced via `COPY --from=golang:...`, and Go and Node runtimes are version-locked.
 - `devcontainer` user is UID/GID 1000. Files and permissions must reflect this.
 
 ## Tool Version Pinning Rule
