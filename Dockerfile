@@ -41,7 +41,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive
 
 ARG NODE_MAJOR_VERSION=22
-ARG NPM_VERSION=11.14.1
 
 ENV SHELL=/usr/bin/bash
 
@@ -71,10 +70,9 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG USERNAME=devcontainer
 ARG USER_UID=1000
-    ARG USER_GID=${USER_UID}
+ARG USER_GID=${USER_UID}
 ARG ZSH_AUTOSUGGESTIONS_SHA=85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5
 ARG NPM_VERSION=11.14.1
-ARG PNPM_VERSION=10.33.0
 
 # Set the working directory
 WORKDIR /go
@@ -138,14 +136,14 @@ ENV PATH=$GOPATH/bin:/usr/local/go/bin:/home/${USERNAME}/.local/bin:$PATH
 ENV CGO_ENABLED=0
 
 COPY --link --from=gh /usr/bin/gh /usr/bin/gh
-COPY --from=ghcr.io/zizmorcore/zizmor@sha256:128ebbe369a95f9d4427737e794537256095b55f779a247aebc960dc4ea1f7b3 /usr/bin/zizmor /usr/local/bin/zizmor
+COPY --from=ghcr.io/zizmorcore/zizmor:1.24.1@sha256:128ebbe369a95f9d4427737e794537256095b55f779a247aebc960dc4ea1f7b3 /usr/bin/zizmor /usr/local/bin/zizmor
 COPY --link --from=golang:1.26.3@sha256:313faae491b410a35402c05d35e7518ae99103d957308e940e1ae2cfa0aac29b /usr/local/go /usr/local/go
 COPY --link --from=node /usr/bin/node /usr/bin/node
 COPY --link --from=node /usr/lib/node_modules /usr/lib/node_modules
 # pnpm's entrypoint is a symlink into its package directory, so both are required.
 COPY --link --from=pnpm /usr/local/bin/pnpm /usr/local/bin/pnpm
 COPY --link --from=pnpm /usr/local/lib/node_modules/pnpm /usr/local/lib/node_modules/pnpm
-COPY --from=ghcr.io/astral-sh/uv@sha256:240fb85ab0f263ef12f492d8476aa3a2e4e1e333f7d67fbdd923d00a506a516a /uv /uvx /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.11.7@sha256:240fb85ab0f263ef12f492d8476aa3a2e4e1e333f7d67fbdd923d00a506a516a /uv /uvx /bin/
 COPY --from=ghcr.io/aquasecurity/trivy@sha256:be1190afcb28352bfddc4ddeb71470835d16462af68d310f9f4bca710961a41e /usr/local/bin/trivy /usr/bin/trivy
 COPY --from=ghcr.io/hadolint/hadolint@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e /bin/hadolint /bin/
 
@@ -159,8 +157,7 @@ RUN set -eux \
     && mv /usr/local/lib/node_modules/package /usr/local/lib/node_modules/npm \
     && rm -f /tmp/npm.tgz /tmp/npm-version.json \
     && ln -sfn ../local/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm \
-    && ln -sfn ../local/lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx \
-    && node /usr/local/lib/node_modules/npm/bin/npm-cli.js install --global --prefix /usr/local "pnpm@${PNPM_VERSION}"
+    && ln -sfn ../local/lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx
 
 COPY zshrc /home/${USERNAME}/.zshrc
 COPY vimrc /home/${USERNAME}/.vimrc
