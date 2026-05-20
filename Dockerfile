@@ -70,10 +70,9 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG USERNAME=devcontainer
 ARG USER_UID=1000
-    ARG USER_GID=${USER_UID}
+ARG USER_GID=${USER_UID}
 ARG ZSH_AUTOSUGGESTIONS_SHA=85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5
 ARG NPM_VERSION=11.14.1
-ARG PNPM_VERSION=10.33.0
 
 # Set the working directory
 WORKDIR /go
@@ -158,8 +157,7 @@ RUN set -eux \
     && mv /usr/local/lib/node_modules/package /usr/local/lib/node_modules/npm \
     && rm -f /tmp/npm.tgz /tmp/npm-version.json \
     && ln -sfn ../local/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm \
-    && ln -sfn ../local/lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx \
-    && node /usr/local/lib/node_modules/npm/bin/npm-cli.js install --global --prefix /usr/local "pnpm@${PNPM_VERSION}"
+    && ln -sfn ../local/lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx
 
 COPY zshrc /home/${USERNAME}/.zshrc
 COPY vimrc /home/${USERNAME}/.vimrc
