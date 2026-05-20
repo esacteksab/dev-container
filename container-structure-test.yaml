@@ -14,7 +14,7 @@ commandTests:
   - name: "npm"
     command: "npm"
     args: ["--version"]
-    expectedOutput: ["[0-9]+\\."]
+    expectedOutput: ["11\\.14\\.1"]
 
   - name: "npx"
     command: "npx"
