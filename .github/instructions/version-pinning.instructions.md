@@ -5,6 +5,8 @@ applyTo: ["Dockerfile", "container-structure-test.yaml", "requirements.txt", "pa
 
 # Version Pinning
 
+- Versions should be pinned to SHAs over mutable tags.
+
 ## Docker Base Images
 
 - All `FROM` directives **must** use a SHA256 digest: `image:tag@sha256:<digest>`

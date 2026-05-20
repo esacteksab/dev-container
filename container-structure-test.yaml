@@ -21,6 +21,11 @@ commandTests:
     args: ["--version"]
     expectedOutput: ["[0-9]+\\."]
 
+  - name: "corepack"
+    command: "corepack"
+    args: ["--version"]
+    expectedOutput: ["0\\.35\\.0"]
+
   - name: "pnpm"
     command: "pnpm"
     args: ["--version"]
@@ -119,6 +124,10 @@ fileExistenceTests:
 
   - name: "/usr/bin/npx exists"
     path: "/usr/bin/npx"
+    shouldExist: true
+
+  - name: "/usr/local/bin/corepack exists"
+    path: "/usr/local/bin/corepack"
     shouldExist: true
 
   - name: "/usr/local/bin/pnpm exists"
