@@ -41,6 +41,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive
 
 ARG NODE_MAJOR_VERSION=22
+ARG NPM_VERSION=11.14.1
 
 ENV SHELL=/usr/bin/bash
 
@@ -70,8 +71,9 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG USERNAME=devcontainer
 ARG USER_UID=1000
-ARG USER_GID=${USER_UID}
+    ARG USER_GID=${USER_UID}
 ARG ZSH_AUTOSUGGESTIONS_SHA=85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5
+ARG NPM_VERSION=11.14.1
 ARG PNPM_VERSION=10.33.0
 
 # Set the working directory
@@ -147,9 +149,18 @@ COPY --from=ghcr.io/astral-sh/uv@sha256:240fb85ab0f263ef12f492d8476aa3a2e4e1e333
 COPY --from=ghcr.io/aquasecurity/trivy@sha256:be1190afcb28352bfddc4ddeb71470835d16462af68d310f9f4bca710961a41e /usr/local/bin/trivy /usr/bin/trivy
 COPY --from=ghcr.io/hadolint/hadolint@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e /bin/hadolint /bin/
 
-RUN ln -sfn ../lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm \
-    && ln -sfn ../lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx \
-    && npm install --global --prefix /usr/local "pnpm@${PNPM_VERSION}"
+RUN set -eux \
+    && mkdir -p /usr/local/lib/node_modules \
+    && curl -fsSL "https://registry.npmjs.org/npm/${NPM_VERSION}" -o /tmp/npm-version.json \
+    && npm_sha1="$(jq -r '.dist.shasum' /tmp/npm-version.json)" \
+    && curl -fsSL "https://registry.npmjs.org/npm/-/npm-${NPM_VERSION}.tgz" -o /tmp/npm.tgz \
+    && echo "${npm_sha1}  /tmp/npm.tgz" | sha1sum -c - \
+    && tar -xzf /tmp/npm.tgz -C /usr/local/lib/node_modules \
+    && mv /usr/local/lib/node_modules/package /usr/local/lib/node_modules/npm \
+    && rm -f /tmp/npm.tgz /tmp/npm-version.json \
+    && ln -sfn ../local/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm \
+    && ln -sfn ../local/lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx \
+    && node /usr/local/lib/node_modules/npm/bin/npm-cli.js install --global --prefix /usr/local "pnpm@${PNPM_VERSION}"
 
 COPY zshrc /home/${USERNAME}/.zshrc
 COPY vimrc /home/${USERNAME}/.vimrc
