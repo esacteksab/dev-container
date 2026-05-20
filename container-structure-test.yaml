@@ -74,6 +74,11 @@ commandTests:
     args: ["--version"]
     expectedOutput: ["Version: 0.70.0"]
 
+  - name: "hadolint"
+    command: "hadolint"
+    args: ["--version"]
+    expectedOutput: ["Haskell Dockerfile Linter 2\\.14\\.0"]
+
   - name: "jq"
     command: "jq"
     args: ["--version"]
@@ -116,8 +121,8 @@ fileExistenceTests:
     path: "/usr/bin/npx"
     shouldExist: true
 
-  - name: "/usr/bin/pnpm exists"
-    path: "/usr/bin/pnpm"
+  - name: "/usr/local/bin/pnpm exists"
+    path: "/usr/local/bin/pnpm"
     shouldExist: true
 
   - name: "/bin/uv exists"
