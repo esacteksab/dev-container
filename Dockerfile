@@ -41,7 +41,6 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DEBIAN_FRONTEND=noninteractive
 
 ARG NODE_MAJOR_VERSION=22
-ARG NPM_VERSION=11.14.1
 
 ENV SHELL=/usr/bin/bash
 

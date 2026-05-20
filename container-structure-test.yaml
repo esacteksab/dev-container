@@ -24,7 +24,7 @@ commandTests:
   - name: "pnpm"
     command: "pnpm"
     args: ["--version"]
-    expectedOutput: ["10\\."]
+    expectedOutput: ["10\\.33\\.0"]
     excludedOutput:
       - "not found"
       - "No such file or directory"
