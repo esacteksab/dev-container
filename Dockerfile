@@ -153,7 +153,7 @@ RUN set -eux \
     && rm -f /tmp/npm.tgz /tmp/npm-version.json \
     && ln -sfn ../local/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm \
     && ln -sfn ../local/lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx \
-    && npm install --global --prefix /usr/local corepack@0.35.0 \
+    && npm install --global --prefix /usr/local corepack@0.30.0 \
     && corepack enable pnpm \
     && corepack prepare pnpm@10.33.0 --activate
 

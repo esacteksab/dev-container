@@ -24,7 +24,7 @@ commandTests:
   - name: "corepack"
     command: "corepack"
     args: ["--version"]
-    expectedOutput: ["0\\.35\\.0"]
+    expectedOutput: ["0\\.30\\.0"]
 
   - name: "pnpm"
     command: "pnpm"
