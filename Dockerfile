@@ -72,6 +72,7 @@ ARG USERNAME=devcontainer
 ARG USER_UID=1000
 ARG USER_GID=${USER_UID}
 ARG ZSH_AUTOSUGGESTIONS_SHA=85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5
+ARG PNPM_VERSION=10.33.0
 
 # Set the working directory
 WORKDIR /go
@@ -147,7 +148,8 @@ COPY --from=ghcr.io/aquasecurity/trivy@sha256:be1190afcb28352bfddc4ddeb71470835d
 COPY --from=ghcr.io/hadolint/hadolint@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e /bin/hadolint /bin/
 
 RUN ln -sfn ../lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm \
-    && ln -sfn ../lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx
+    && ln -sfn ../lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx \
+    && npm install --global --prefix /usr/local "pnpm@${PNPM_VERSION}"
 
 COPY zshrc /home/${USERNAME}/.zshrc
 COPY vimrc /home/${USERNAME}/.vimrc
