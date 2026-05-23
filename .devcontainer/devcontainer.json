@@ -10,11 +10,15 @@
   },
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "remoteUser": "${localEnv:USER}",
+  "remoteEnv": {
+    "SSH_AUTH_SOCK": "/tmp/1password-agent.sock"
+  },
   "features": {
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   },
   "mounts": [
     "source=${localEnv:HOME}/.gitconfig,target=/home/${localEnv:USER}/.gitconfig,type=bind,readonly",
+    "source=${localEnv:HOME}/.1password/agent.sock,target=/tmp/1password-agent.sock,type=bind",
     "source=${localEnv:HOME}/.config/gh,target=/home/${localEnv:USER}/.config/gh,type=bind",
     "source=go-docker-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
     "source=go-docker-zshhistory,target=/commandhistory,type=volume"
