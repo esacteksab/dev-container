@@ -45,6 +45,16 @@ Use these mechanisms in the **consuming repo**, not the base image:
 | Extra Python packages | `requirements.txt` in the project, installed via `postCreateCommand` |
 | Node packages | `package.json` + `pnpm install` in `postCreateCommand` |
 
+## Git Signing and Agent Forwarding
+
+If a consuming repo mounts the host `~/.gitconfig` into the dev container, it must also ensure the container has a working SSH signing path. Keep these concerns together:
+
+- Forward a live `SSH_AUTH_SOCK` into the container via `remoteEnv` and a bind mount when commit signing depends on an SSH agent or 1Password
+- Make sure the mounted git config does not reference a host-only signing helper path that the container cannot execute
+- If the host config is platform-specific, override `gpg.ssh.program` in the container to a Linux-available signer or remove the incompatible setting at the project level
+
+Do not treat host git config mounts as automatically safe across WSL, Linux containers, and other host environments; validate that signing still works after any devcontainer change that touches mounts, env vars, or shell startup.
+
 ## Adding a New Tool: Decision Checklist
 
 Before adding a tool to the `Dockerfile`, confirm:
