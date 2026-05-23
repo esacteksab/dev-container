@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "bash .github/hooks/run-hadolint-if-dockerfile-edited.sh",
+        "timeout": 120
+      }
+    ]
+  }
+}

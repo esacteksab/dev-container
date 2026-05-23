@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "bash .github/hooks/pretool-dockerfile-guard.sh",
+        "timeout": 30
+      }
+    ]
+  }
+}

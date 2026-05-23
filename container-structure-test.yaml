@@ -4,27 +4,32 @@ commandTests:
   - name: "go"
     command: "go"
     args: ["version"]
-    expectedOutput: ["go version go1\\.26\\."]
+    expectedOutput: ["go version go1\\.26\\.3"]
 
   - name: "node"
     command: "node"
     args: ["--version"]
-    expectedOutput: ["v22\\."]
+    expectedOutput: ["v22\\.22\\.3"]
 
   - name: "npm"
     command: "npm"
     args: ["--version"]
-    expectedOutput: ["[0-9]+\\."]
+    expectedOutput: ["11\\.14\\.1"]
 
   - name: "npx"
     command: "npx"
     args: ["--version"]
     expectedOutput: ["[0-9]+\\."]
 
+  - name: "corepack"
+    command: "corepack"
+    args: ["--version"]
+    expectedOutput: ["0\\.35\\.0"]
+
   - name: "pnpm"
     command: "pnpm"
     args: ["--version"]
-    expectedOutput: ["10\\."]
+    expectedOutput: ["10\\.33\\.0"]
     excludedOutput:
       - "not found"
       - "No such file or directory"
@@ -74,6 +79,11 @@ commandTests:
     args: ["--version"]
     expectedOutput: ["Version: 0.70.0"]
 
+  - name: "hadolint"
+    command: "hadolint"
+    args: ["--version"]
+    expectedOutput: ["Haskell Dockerfile Linter 2\\.14\\.0"]
+
   - name: "jq"
     command: "jq"
     args: ["--version"]
@@ -116,8 +126,12 @@ fileExistenceTests:
     path: "/usr/bin/npx"
     shouldExist: true
 
-  - name: "/usr/bin/pnpm exists"
-    path: "/usr/bin/pnpm"
+  - name: "/usr/local/bin/corepack exists"
+    path: "/usr/local/bin/corepack"
+    shouldExist: true
+
+  - name: "/usr/local/bin/pnpm exists"
+    path: "/usr/local/bin/pnpm"
     shouldExist: true
 
   - name: "/bin/uv exists"
