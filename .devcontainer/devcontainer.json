@@ -14,7 +14,7 @@
     "SSH_AUTH_SOCK": "/tmp/1password-agent.sock"
   },
   "features": {
-    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:": {}
   },
   "mounts": [
     "source=${localEnv:HOME}/.gitconfig,target=/home/${localEnv:USER}/.gitconfig,type=bind,readonly",
