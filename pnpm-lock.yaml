@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       corepack:
-        specifier: 0.35.0
-        version: 0.35.0
+        specifier: 0.36.0
+        version: 0.36.0
       prettier:
         specifier: ^3.9.6
         version: 3.9.6
@@ -60,8 +60,8 @@ packages:
   '@taplo/lib@0.5.0':
     resolution: {integrity: sha512-+xIqpQXJco3T+VGaTTwmhxLa51qpkQxCjRwezjFZgr+l21ExlywJFcDfTrNmL6lG6tqb0h8GyJKO3UPGPtSCWg==}
 
-  corepack@0.35.0:
-    resolution: {integrity: sha512-9BuIGHDFE7Zieor1CeRsvt7X7AJFEuJ6OnbSbsVprq83ChDFoBh1wP98NeUS9FT3ZwlzFllPElXcz/OiDf0YGw==}
+  corepack@0.36.0:
+    resolution: {integrity: sha512-SiiJsBhZqdBiPHTEl6OT3sASrRrKIcYTQMsVGXx6EE/gM8WFMwYjeIX8Tt8RiU4Iv2J6LbT8KpGfCOsBpRWB/w==}
     engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
     hasBin: true
 
@@ -129,7 +129,7 @@ snapshots:
     dependencies:
       '@taplo/core': 0.2.0
 
-  corepack@0.35.0: {}
+  corepack@0.36.0: {}
 
   prettier-plugin-go-template@0.0.15(prettier@3.9.6):
     dependencies:
