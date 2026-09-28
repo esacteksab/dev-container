@@ -71,7 +71,7 @@ RUN set -eux \
 FROM ubuntu:24.04@sha256:008173c23f95b170204355c12626cb5a965d779a7e1283b09e9cffbb1bf33ca3
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-
+# hadolint ignore=DL3064
 ARG USERNAME=devcontainer
 ARG USER_UID=1000
 ARG USER_GID=${USER_UID}
