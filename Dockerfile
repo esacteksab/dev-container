@@ -1,5 +1,5 @@
 # hadolint global ignore=DL3008
-FROM ubuntu:24.04@sha256:008173c23f95b170204355c12626cb5a965d779a7e1283b09e9cffbb1bf33ca3 AS python
+FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55 AS python
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -11,7 +11,7 @@ RUN set -eux \
         ca-certificates \
         python3-pip
 
-FROM ubuntu:24.04@sha256:008173c23f95b170204355c12626cb5a965d779a7e1283b09e9cffbb1bf33ca3 AS gh
+FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55 AS gh
 
 RUN set -eux \
     && echo 'APT::Install-Suggests "0";' >> /etc/apt/apt.conf.d/00-docker \
@@ -34,7 +34,7 @@ RUN set -eux \
     && rm -rf /var/log/apt/* \
     && rm -rf /var/log/dpkg.log
 
-FROM ubuntu:24.04@sha256:008173c23f95b170204355c12626cb5a965d779a7e1283b09e9cffbb1bf33ca3 AS node
+FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55 AS node
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -68,7 +68,7 @@ RUN set -eux \
     && rm -rf /var/log/apt/* \
     && rm -rf /var/log/dpkg.log
 
-FROM ubuntu:24.04@sha256:008173c23f95b170204355c12626cb5a965d779a7e1283b09e9cffbb1bf33ca3
+FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3064
