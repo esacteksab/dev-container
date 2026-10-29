@@ -4,17 +4,17 @@ commandTests:
   - name: "go"
     command: "go"
     args: ["version"]
-    expectedOutput: ["go version go1\\.26\\.3"]
+    expectedOutput: ["go version go1\\.26\\.10"]
 
   - name: "node"
     command: "node"
     args: ["--version"]
-    expectedOutput: ["v22\\.22\\.3"]
+    expectedOutput: ["v22\\.23\\.4"]
 
   - name: "npm"
     command: "npm"
     args: ["--version"]
-    expectedOutput: ["11\\.14\\.1"]
+    expectedOutput: ["12\\.2\\.1"]
 
   - name: "npx"
     command: "npx"
@@ -24,12 +24,12 @@ commandTests:
   - name: "corepack"
     command: "corepack"
     args: ["--version"]
-    expectedOutput: ["0\\.35\\.0"]
+    expectedOutput: ["0\\.36\\.0"]
 
   - name: "pnpm"
     command: "pnpm"
     args: ["--version"]
-    expectedOutput: ["10\\.33\\.0"]
+    expectedOutput: ["12\\.16\\.1"]
     excludedOutput:
       - "not found"
       - "No such file or directory"
@@ -48,7 +48,7 @@ commandTests:
   - name: "uv"
     command: "uv"
     args: ["--version"]
-    expectedOutput: ["uv "]
+    expectedOutput: ["uv 0\\.13\\.6"]
 
   - name: "pre-commit"
     command: "pre-commit"
@@ -72,17 +72,17 @@ commandTests:
   - name: "zizmor"
     command: "zizmor"
     args: ["--version"]
-    expectedOutput: ["zizmor "]
+    expectedOutput: ["zizmor 1\\.31\\.1"]
 
   - name: "trivy"
     command: "trivy"
     args: ["--version"]
-    expectedOutput: ["Version: 0.70.0"]
+    expectedOutput: ["Version: 0\\.76\\.1"]
 
   - name: "hadolint"
     command: "hadolint"
     args: ["--version"]
-    expectedOutput: ["Haskell Dockerfile Linter 2\\.14\\.0"]
+    expectedOutput: ["Haskell Dockerfile Linter 2\\.15\\.1"]
 
   - name: "jq"
     command: "jq"
