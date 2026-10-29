@@ -1,5 +1,5 @@
 # hadolint global ignore=DL3008
-FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55 AS python
+FROM ubuntu:24.04@sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852 AS python
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -11,7 +11,7 @@ RUN set -eux \
         ca-certificates \
         python3-pip
 
-FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55 AS gh
+FROM ubuntu:24.04@sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852 AS gh
 
 RUN set -eux \
     && echo 'APT::Install-Suggests "0";' >> /etc/apt/apt.conf.d/00-docker \
@@ -34,13 +34,13 @@ RUN set -eux \
     && rm -rf /var/log/apt/* \
     && rm -rf /var/log/dpkg.log
 
-FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55 AS node
+FROM ubuntu:24.04@sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852 AS node
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ARG NODE_VERSION=22.22.3
+ARG NODE_VERSION=22.23.4
 
 ENV SHELL=/usr/bin/bash
 
@@ -68,7 +68,7 @@ RUN set -eux \
     && rm -rf /var/log/apt/* \
     && rm -rf /var/log/dpkg.log
 
-FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55
+FROM ubuntu:24.04@sha256:fe81560990fae86dc4743202b2cb4d3df98d0bcf949173cecef15ce1127ef852
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # hadolint ignore=DL3064
@@ -76,7 +76,7 @@ ARG USERNAME=devcontainer
 ARG USER_UID=1000
 ARG USER_GID=${USER_UID}
 ARG ZSH_AUTOSUGGESTIONS_SHA=85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5
-ARG NPM_VERSION=11.14.1
+ARG NPM_VERSION=12.2.1
 
 # Set the working directory
 WORKDIR /go
@@ -140,13 +140,13 @@ ENV PATH=$GOPATH/bin:/usr/local/go/bin:/home/${USERNAME}/.local/bin:$PATH
 ENV CGO_ENABLED=0
 
 COPY --link --from=gh /usr/bin/gh /usr/bin/gh
-COPY --from=ghcr.io/zizmorcore/zizmor:1.24.1@sha256:128ebbe369a95f9d4427737e794537256095b55f779a247aebc960dc4ea1f7b3 /usr/bin/zizmor /usr/local/bin/zizmor
-COPY --link --from=golang:1.26.3@sha256:313faae491b410a35402c05d35e7518ae99103d957308e940e1ae2cfa0aac29b /usr/local/go /usr/local/go
+COPY --from=ghcr.io/zizmorcore/zizmor:1.31.1@sha256:42d409dbb851d4c5d35a058cf042b828bea1e3f2884378c526eb0974780e18d9 /usr/bin/zizmor /usr/local/bin/zizmor
+COPY --link --from=golang:1.26.10@sha256:670bb5aa5349ae03b8516764718486f4f16399134bdc9acd0c46a23f043ab05c /usr/local/go /usr/local/go
 COPY --link --from=node /usr/bin/node /usr/bin/node
 COPY --link --from=node /usr/local/lib/nodejs /usr/local/lib/nodejs
-COPY --from=ghcr.io/astral-sh/uv:0.11.7@sha256:240fb85ab0f263ef12f492d8476aa3a2e4e1e333f7d67fbdd923d00a506a516a /uv /uvx /bin/
-COPY --from=ghcr.io/aquasecurity/trivy@sha256:be1190afcb28352bfddc4ddeb71470835d16462af68d310f9f4bca710961a41e /usr/local/bin/trivy /usr/bin/trivy
-COPY --from=ghcr.io/hadolint/hadolint@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e /bin/hadolint /bin/
+COPY --from=ghcr.io/astral-sh/uv:0.13.6@sha256:af22a52f5eafef3d78e551599d405c02df61919d18028f0cea8eda93bc9986d0 /uv /uvx /bin/
+COPY --from=ghcr.io/aquasecurity/trivy:0.76.1@sha256:790fd66d1697395d8693d1acaa1ea702406a20f109b6fc7bac8db623eca6c06c /usr/local/bin/trivy /usr/bin/trivy
+COPY --from=ghcr.io/hadolint/hadolint:v2.15.1@sha256:32dac94127fd60b7b7e3fbfc65e1383b9b5e25c9bfd7b8536de7a539fe68a12d /bin/hadolint /bin/
 
 RUN set -eux \
     && mkdir -p /usr/local/lib/node_modules \
@@ -159,9 +159,9 @@ RUN set -eux \
     && rm -f /tmp/npm.tgz /tmp/npm-version.json \
     && ln -sfn ../local/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm \
     && ln -sfn ../local/lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx \
-    && npm install --global --prefix /usr/local corepack@0.35.0 \
+    && npm install --global --prefix /usr/local corepack@0.36.0 \
     && corepack enable pnpm \
-    && corepack prepare pnpm@10.33.0 --activate
+    && corepack prepare pnpm@12.16.1 --activate
 
 COPY zshrc /home/${USERNAME}/.zshrc
 COPY vimrc /home/${USERNAME}/.vimrc

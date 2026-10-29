@@ -14,3 +14,4 @@ example
 README.md
 *.exe
 Makefile
+node_modules/
