@@ -40,7 +40,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-ARG NODE_VERSION=22.23.4
+ARG NODE_VERSION=24.22.2
 
 ENV SHELL=/usr/bin/bash
 
@@ -141,7 +141,7 @@ ENV CGO_ENABLED=0
 
 COPY --link --from=gh /usr/bin/gh /usr/bin/gh
 COPY --from=ghcr.io/zizmorcore/zizmor:1.31.1@sha256:42d409dbb851d4c5d35a058cf042b828bea1e3f2884378c526eb0974780e18d9 /usr/bin/zizmor /usr/local/bin/zizmor
-COPY --link --from=golang:1.26.10@sha256:670bb5aa5349ae03b8516764718486f4f16399134bdc9acd0c46a23f043ab05c /usr/local/go /usr/local/go
+COPY --link --from=golang:1.27.3@sha256:2920bb124f1a2e12a1d39f0cab756ae0068441ee1da7655dec7f5e374944095b /usr/local/go /usr/local/go
 COPY --link --from=node /usr/bin/node /usr/bin/node
 COPY --link --from=node /usr/local/lib/nodejs /usr/local/lib/nodejs
 COPY --from=ghcr.io/astral-sh/uv:0.13.6@sha256:af22a52f5eafef3d78e551599d405c02df61919d18028f0cea8eda93bc9986d0 /uv /uvx /bin/
@@ -161,7 +161,7 @@ RUN set -eux \
     && ln -sfn ../local/lib/node_modules/npm/bin/npx-cli.js /usr/bin/npx \
     && npm install --global --prefix /usr/local corepack@0.36.0 \
     && corepack enable pnpm \
-    && corepack prepare pnpm@12.16.1 --activate
+    && corepack prepare pnpm@12.16.1+sha512.091d1dee7927575661b25dab3c2ae31cafc1c54d6b71ed6a6600cf0c1cb10434a447eae14015f1b23e2e6bedeed79df94a932e2164d2832280dce3fb32f656d1 --activate
 
 COPY zshrc /home/${USERNAME}/.zshrc
 COPY vimrc /home/${USERNAME}/.vimrc
