@@ -332,3 +332,19 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+
+# Code
+
+# Make VS Code Remote CLI (`code`) available inside dev-container shells.
+if ! command -v code >/dev/null 2>&1; then
+  _code_cli="$(find /vscode -path '*/bin/remote-cli/code' -type f 2>/dev/null | head -n1)"
+  if [[ -n "$_code_cli" ]]; then
+    _code_cli_dir="$(dirname "$_code_cli")"
+    case ":$PATH:" in
+      *":$_code_cli_dir:"*) ;;
+      *) export PATH="$_code_cli_dir:$PATH" ;;
+    esac
+  fi
+  unset _code_cli _code_cli_dir
+fi
